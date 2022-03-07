@@ -1,6 +1,7 @@
 import random
 import cards
 
+
 class DeckClass:
     def __init__(self):
         self.cards = []
@@ -24,6 +25,9 @@ class DeckClass:
     def show(self):
         for c in self.cards:
             c.show()
+
+    def cardsRemaining(self):
+        return len(self.cards)
 
 
 
