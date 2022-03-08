@@ -19,6 +19,8 @@ thisGame = game.GameClass()
 
 bot = commands.Bot(command_prefix='/', description=description, intents=intents)
 
+explainEmoji = bot.get_emoji(950860713138737202)
+
 
 async def embedCardExplain(ctx, card: cards.CardClass):
     color = houseColor(card.getHouse())
@@ -27,15 +29,14 @@ async def embedCardExplain(ctx, card: cards.CardClass):
 
 async def embedCardShow(ctx, card: cards.CardClass):
     color = houseColor(card.getHouse())
-    await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", "", color))
-
+    msg = await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", "", color))
+    await msg.add_reaction("❓")
 
 
 
 def sendEmbed(title: str, url: str, description: str, color):
     embed = discord.Embed(title=title, url=url, description=description, color=color)
     return embed
-
 
 def houseColor(house):
     switcher = {
@@ -46,6 +47,12 @@ def houseColor(house):
         "Unaligned": discord.Colour.dark_gray()
     }
     return switcher.get(house)
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    if payload.user_id != 943668329871200258:
+        if str(payload.emoji) == "❓":
+            print("Yep, that worked!")
 
 
 @bot.event
