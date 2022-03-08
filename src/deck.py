@@ -28,7 +28,7 @@ class DeckClass:
         chosenCard = None
         try:
             for c in self.cards:
-                if card == c.n:
+                if card.casefold() == c.n.casefold():
                     chosenCard = c
                     self.cards.remove(chosenCard)
                     return chosenCard

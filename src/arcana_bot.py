@@ -52,7 +52,11 @@ def houseColor(house):
 async def on_raw_reaction_add(payload):
     if payload.user_id != 943668329871200258:
         if str(payload.emoji) == "❓":
-            print("Yep, that worked!")
+            print(payload)
+            messageId = payload.message_id
+            msg = await bot.get_channel(payload.channel_id).fetch_message(messageId)
+            await msg.clear_reaction("❓")
+            # await msg.edit()
 
 
 @bot.event
@@ -83,14 +87,16 @@ async def players(ctx):
 
 @bot.command()
 async def draw(ctx, name: str, number: int = 1):
-    await ctx.send(f"**{name}** draws: ")
+    for p in thisGame.players:
+        if name.casefold() == p.name.casefold():
+            await ctx.send(f"**{p.name}** draws: ")
     for i in range(number):
         print(f"Drawing a card for {name}...")
         thisGame.addPlayer(name)
         for p in thisGame.players:
-            if name == p.name:
+            if name.casefold() == p.name.casefold():
                 drawnCard = p.draw(thisGame.deck)
-                # color = houseColor(drawnCard.getHouse())
+                print(drawnCard.n)
                 if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
                     p.hand.remove(cards.errored_card)
                     await ctx.send("Error: No card found!")
@@ -103,26 +109,28 @@ async def draw(ctx, name: str, number: int = 1):
 async def pick(ctx, name: str, *args: str):
     card = " ".join(args)
     print(f"{name} has requested to draw the card {card}.")
-    await ctx.send(f"**{name}** has picked the card...")
     thisGame.addPlayer(name)
     for p in thisGame.players:
-        if name == p.name:
-            pickedCard = p.pick(thisGame.deck, card)
-            if pickedCard.n == "Error" or not isinstance(pickedCard, cards.CardClass):
-                p.hand.remove(cards.errored_card)
-                await ctx.send("Error: No card found!")
-            else:
-                await embedCardShow(ctx, pickedCard)
+        if name.casefold() == p.name.casefold():
+         await ctx.send(f"**{p.name}** has picked the card...")
+         pickedCard = p.pick(thisGame.deck, card)
+        if pickedCard.n == "Error" or not isinstance(pickedCard, cards.CardClass):
+            p.hand.remove(cards.errored_card)
+            await ctx.send("Error: No card found!")
+        else:
+            await embedCardShow(ctx, pickedCard)
 
 
 @bot.command()
 async def showHand(ctx, player: str):
     print(f"{ctx.author} has requested to see {player}'s hand.")
-    await ctx.send(f"**{player}**'s hand is:")
     output: str = ""
     output += f"{player}: "
     for p in thisGame.players:
-        if player in p.name:
+        if player.casefold() in p.name.casefold():
+            await ctx.send(f"**{p.name}**'s hand is:")
+    for p in thisGame.players:
+        if player.casefold() in p.name.casefold():
             for c in p.hand:
                 output += f"\n**{c.show()}**"
                 await embedCardShow(ctx, c)
@@ -146,7 +154,7 @@ async def explain(ctx, *args: str):
     card = " ".join(args)
     print(f"{ctx.author} has requested an explanation of the card {card}.")
     for c in thisGame.deck.originalCards:
-        if card in c.n:
+        if card.casefold() in c.n.casefold():
             try:
                 await embedCardExplain(ctx, c)
                 return

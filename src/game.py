@@ -14,7 +14,7 @@ class GameClass:
     def addPlayer(self, name):
         newPlayer = True
         for p in self.players:
-            if p.name == name:
+            if p.name.casefold() == name.casefold():
                 newPlayer = False
         if newPlayer:
             addedPlayer = player.Player(name)
