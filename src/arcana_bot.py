@@ -25,12 +25,12 @@ async def embedCard(ctx, card: cards.CardClass):
     ctx.send(embed=sendEmbed(f"**{card.show()}**", "", card.explain(), color))
 
 
-def sendEmbed(title: str, url: str, description: str, color):
+async def sendEmbed(title: str, url: str, description: str, color):
     embed = discord.Embed(title=title, url=url, description=description, color=color)
     return embed
 
 
-def houseColor(house):
+async def houseColor(house):
     switcher = {
         "Darkness": discord.Colour.purple(),
         "Light": discord.Colour.yellow(),
