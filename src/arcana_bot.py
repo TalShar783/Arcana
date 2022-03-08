@@ -58,15 +58,14 @@ def houseColor(house):
 async def on_raw_reaction_add(payload):
     if payload.user_id != 943668329871200258:
         if str(payload.emoji) == "❓":
-            # print(payload)
             messageId = payload.message_id
             msg = await bot.get_channel(payload.channel_id).fetch_message(messageId)
-            await msg.clear_reaction("❓")
-            msgCard = (msg.embeds[0].title).replace("*","")
-            print(msgCard)
-            for c in thisGame.deck.originalCards:
-                if c.n.casefold() == msgCard.casefold():
-                    await msg.edit(embed=sendCardEmbed(c))
+            if isinstance(msg.embeds[0].description, discord.embeds._EmptyEmbed):
+                await msg.clear_reaction("❓")
+                msgCard = msg.embeds[0].title.replace("*", "")
+                for c in thisGame.deck.originalCards:
+                    if c.n.casefold() == msgCard.casefold():
+                        await msg.edit(embed=sendCardEmbed(c))
 
 
 @bot.event
@@ -97,12 +96,12 @@ async def players(ctx):
 
 @bot.command()
 async def draw(ctx, name: str, number: int = 1):
+    thisGame.addPlayer(name)
     for p in thisGame.players:
         if name.casefold() == p.name.casefold():
             await ctx.send(f"**{p.name}** draws: ")
     for i in range(number):
         print(f"Drawing a card for {name}...")
-        thisGame.addPlayer(name)
         for p in thisGame.players:
             if name.casefold() == p.name.casefold():
                 drawnCard = p.draw(thisGame.deck)
