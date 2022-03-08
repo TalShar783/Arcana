@@ -33,10 +33,16 @@ async def embedCardShow(ctx, card: cards.CardClass):
     await msg.add_reaction("❓")
 
 
+def sendCardEmbed(card: cards.CardClass):
+    color = houseColor(card.getHouse())
+    embed = discord.Embed(title=card.show(), url="", description=card.explain(), color=color)
+    return embed
+
 
 def sendEmbed(title: str, url: str, description: str, color):
     embed = discord.Embed(title=title, url=url, description=description, color=color)
     return embed
+
 
 def houseColor(house):
     switcher = {
@@ -52,10 +58,16 @@ def houseColor(house):
 async def on_raw_reaction_add(payload):
     if payload.user_id != 943668329871200258:
         if str(payload.emoji) == "❓":
-            print(payload)
+            # print(payload)
             messageId = payload.message_id
             msg = await bot.get_channel(payload.channel_id).fetch_message(messageId)
             await msg.clear_reaction("❓")
+            msgCard = (msg.embeds[0].title).replace("*","")
+            print(msgCard)
+            for c in thisGame.deck.originalCards:
+                if c.n.casefold() == msgCard.casefold():
+                    await msg.edit(embed=sendCardEmbed(c))
+            # await msg.channel.send(msg.embed)
             # await msg.edit()
 
 
