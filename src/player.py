@@ -7,7 +7,8 @@ class Player:
         self.hand = []
 
     def draw(self, deck):
-        drawnCard = self.hand.append(deck.drawCard())
+        drawnCard = deck.drawCard()
+        self.hand.append(drawnCard)
         return drawnCard
 
     def showHand(self):
