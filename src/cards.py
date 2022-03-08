@@ -7,31 +7,30 @@ class CardClass:
         self.d = description
         self.h = house
         self.registry.append(self)
-
-    def rollChalice(self):
-        switcher = {
-            1: "blood",
-            2: "poison",
-            3: "wine"
-        }
-        roll = switcher.get(random.randint(1, 3), "Invalid")
-        return roll
-# TODO: Marry this rollChalice function to draw instead of explain.
-
+        if self.n == "The Chalice":
+            self.d += f" {self.rollChalice()}"
     def show(self):
         try:
             return(self.n)
         except AttributeError:
             return
+
     def explain(self):
-        if self.n == "The Chalice":
-            chaliceFluid = self.rollChalice()
-            return f"{self.d} It appears to be filled with {chaliceFluid}."
-        else:
-            return self.d
+        return self.d
 
     def getHouse(self):
-        return(self.h)
+        return self.h
+
+    def rollChalice(self):
+        switcher = {
+            1: "It is filled with glistening red blood.",
+            2: "It is filled with nauseating green poison.",
+            3: "It is filled with rich purple wine."
+        }
+        roll = switcher.get(random.randint(1, 3), "Invalid")
+        return roll
+
+
 
 
 lord_of_ice = CardClass("Lord of Ice",

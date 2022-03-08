@@ -17,7 +17,6 @@ intents = discord.Intents.all()
 intents.members = True
 
 thisGame = game.GameClass()
-fullDeck = deck.DeckClass()
 
 bot = commands.Bot(command_prefix='/', description=description, intents=intents)
 
@@ -77,7 +76,7 @@ async def explain(ctx, *args: str):
     card = " ".join(args)
     print(f"{ctx.author} has requested an explanation of the card {card}.")
     output: str = ""
-    for c in fullDeck.cards:
+    for c in thisGame.deck.cards:
         if card in c.n:
             output += f"**{c.show()}:** {c.explain()}"
     print(output)
