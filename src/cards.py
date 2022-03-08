@@ -16,6 +16,8 @@ class CardClass:
         }
         roll = switcher.get(random.randint(1, 3), "Invalid")
         return roll
+# TODO: Marry this rollChalice function to draw instead of explain.
+
     def show(self):
         try:
             return(self.n)

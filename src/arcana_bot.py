@@ -37,14 +37,15 @@ async def reset(ctx):
 
 
 @bot.command()
-async def draw(ctx, name: str):
-    print(f"Drawing a card for {name}...")
-    if thisGame == None:
-        thisGame.reset()
-    thisGame.addPlayer(name)
-    for p in thisGame.players:
-        if name == p.name:
-            p.draw(thisGame.deck)
+async def draw(ctx, name: str, number: int):
+    for i in range(number):
+        print(f"Drawing a card for {name}...")
+        if thisGame == None:
+            thisGame.reset()
+        thisGame.addPlayer(name)
+        for p in thisGame.players:
+            if name == p.name:
+                p.draw(thisGame.deck)
     return
 
 @bot.command()
@@ -55,7 +56,7 @@ async def showHand(ctx, player: str):
     for p in thisGame.players:
         if player in p.name:
             for c in p.hand:
-                output += f"\n{c.show()}"
+                output += f"\n**{c.show()}**"
             print(output)
             await ctx.send(output)
 
@@ -63,11 +64,11 @@ async def showHand(ctx, player: str):
 async def explainHand(ctx, player: str):
     print(f"{ctx.author} has requested to see {player}'s cards and their meaning.")
     output: str = ""
-    output += f"{player}: "
+    output += f"**{player}:** "
     for p in thisGame.players:
         if player in p.name:
             for c in p.hand:
-                output += f"\n{c.show()}: {c.explain()}"
+                output += f"\n\n**{c.show()}:** {c.explain()}"
             print(output)
             await ctx.send(output)
 
@@ -78,7 +79,7 @@ async def explain(ctx, *args: str):
     output: str = ""
     for c in fullDeck.cards:
         if card in c.n:
-            output += f"{c.show()}: {c.explain()}"
+            output += f"**{c.show()}:** {c.explain()}"
     print(output)
     try:
         await ctx.send(output)
