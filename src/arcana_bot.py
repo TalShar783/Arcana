@@ -98,17 +98,23 @@ async def explainHand(ctx, player: str):
 async def explain(ctx, *args: str):
     card = " ".join(args)
     print(f"{ctx.author} has requested an explanation of the card {card}.")
-    output: str = ""
     for c in thisGame.deck.cards:
         if card in c.n:
             color = houseColor(c.getHouse())
             try:
                 await ctx.send(embed=sendEmbed(f"**{c.show()}**", "", c.explain(), color))
+                return
             except discord.errors.HTTPException:
                 number = random.randint(1,10)
                 match number:
                     case 10: await ctx.send("How about go fuck yourself.")
                     case _: await ctx.send("Oops, that's not the proper name of a card. Try again!")
+                return
+
+    number = random.randint(1,10)
+    match number:
+        case 10: await ctx.send("How about go fuck yourself.")
+        case _: await ctx.send("Oops, that's not the proper name of a card. Try again!")
 
 
 
