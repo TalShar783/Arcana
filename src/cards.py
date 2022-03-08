@@ -7,6 +7,7 @@ class CardClass:
         self.d = description
         self.h = house
         self.registry.append(self)
+
     def rollChalice(self):
         switcher = {
             1: "blood",
@@ -16,9 +17,17 @@ class CardClass:
         roll = switcher.get(random.randint(1, 3), "Invalid")
         return roll
     def show(self):
-        return(self.n)
+        try:
+            return(self.n)
+        except AttributeError:
+            return
     def explain(self):
-        return(self.d)
+        if self.n == "The Chalice":
+            chaliceFluid = self.rollChalice()
+            return f"{self.d} It appears to be filled with {chaliceFluid}."
+        else:
+            return self.d
+
     def getHouse(self):
         return(self.h)
 
@@ -64,13 +73,13 @@ inferno = CardClass("Inferno",
 king_of_darkness = CardClass("King of Darkness",
                     "Historically representative of Altherion, the architect of all suffering for the children of the Phaen, though often refers to Elimatar now that he has gained ascendancy over his father.",
                     "Darkness")
-knight_of_darkness = CardClass("King of Darkness",
+knight_of_darkness = CardClass("Knight of Darkness",
                      "Historically representative of Elimatar, the blade of Darkness that destroyed everything the Saen’dal and their makers held dear.",
                      "Darkness")
 soldier_of_darkness = CardClass("Soldier of Darkness",
                      "Representative of the Ul’ssan, the generals and commanders who waged the First War against the Phaen and their children, and who lurk beneath the world plotting vengeance.",
                      "Darkness")
-child_of_darkness = CardClass("King of Darkness",
+child_of_darkness = CardClass("Child of Darkness",
                      "Representative of the Dak’ashi, Lomath, and the other spawn of Altherion’s machinations and the minions of True Darkness.",
                      "Darkness")
 chaos = CardClass("Chaos",
@@ -109,7 +118,7 @@ the_sceptre = CardClass("The Sceptre",
                       "An ambiguous card, representing political power. Thought to recall images of Prince Lethen’s Sceptre, by which he ruled the southern kingdoms of Tharyd in ancient days.",
                       "Unaligned")
 the_chalice = CardClass("The Chalice",
-                      "An ambiguous card, representing unforeseen circumstances. Thought to recall images of Prince Lethen’s drinking cup, which was eventually recovered and used by Archon Asrahmat.",
+                      f"An ambiguous card, representing unforeseen circumstances. Thought to recall images of Prince Lethen’s drinking cup, which was eventually recovered and used by Archon Asrahmat.",
                       "Unaligned")
 the_crown = CardClass("The Crown",
                       "An ambiguous card, representing sovereignty and leadership. Thought to recall images of the Crown of Light, worn by Archon Asrahmat in the days of the Amaraen’dal, the Society of Light.",
@@ -140,3 +149,6 @@ rebirth = CardClass("Rebirth",
 # for p in CardClass.registry:
 #     print(p.n)
 
+# for p in CardClass.registry:
+#     p.show()
+#     print(p.explain())

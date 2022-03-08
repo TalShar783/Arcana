@@ -15,16 +15,17 @@ class DeckClass:
         try:
             chosenCard = random.choice(self.cards)
             self.cards.remove(chosenCard)
+            return chosenCard
         except IndexError:
             chosenCard = None
             print("You've run out of cards!")
-        return chosenCard
+            return
     def shuffle(self):
         self.cards = []
         self.build()
     def show(self):
         for c in self.cards:
-            c.show()
+            print(c.show())
 
     def cardsRemaining(self):
         return len(self.cards)

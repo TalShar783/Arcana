@@ -7,8 +7,8 @@ class Player:
         self.hand = []
 
     def draw(self, deck):
-        self.hand.append(deck.drawCard())
-        return self
+        drawnCard = self.hand.append(deck.drawCard())
+        return drawnCard
 
     def showHand(self):
         for card in self.hand:
@@ -17,6 +17,12 @@ class Player:
     def explainHand(self):
         for card in self.hand:
             print(f"{card.show()}: {card.explain()}")
+
+    def getHand(self):
+        myHand = []
+        for card in self.hand:
+            card.append(myHand)
+            return myHand
 
     def getName(self):
         return self.name
@@ -31,6 +37,9 @@ class Player:
 
 
 # thisDeck = deck.DeckClass()
+
+
+
 #
 # # bob = Player("Bob")
 # # bob.draw(thisDeck)

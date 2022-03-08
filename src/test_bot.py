@@ -11,8 +11,8 @@ description = '''An example bot to showcase the discord.ext.commands extension
 module.
 There are a number of utility commands being showcased here.'''
 
-intents = discord.Intents.default()
-# intents.members = True
+intents = discord.Intents.all()
+intents.members = True
 
 bot = commands.Bot(command_prefix='!', description=description, intents=intents)
 
@@ -23,15 +23,30 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
-@bot.event
-async def on_ready():
-    print("{0.user} is online!".format(bot))
 
 @bot.event
-async def on_message(message):
-    # if message.author == client.user:
-    #     return
+async def when_mentioned():
+    print('Logged in as')
+    print(bot.user.name)
+    print(bot.user.id)
+    print('------')
+#
+# @bot.event
+# async def on_ready():
+#     print("{0.user} is online!".format(bot))
 
+# @bot.event
+# async def on_message(message):
+#     # if message.author == client.user:
+#     #     return
+#
+#     if message.content.startswith("!hello") or message.content.startswith("/hello"):
+#         channel1 = bot.get_channel(950459698870628372)
+#         await channel1.send("Hello from the other side!")
+#     await bot.process_commands(message)
+
+@bot.listen('on_message')
+async def respond_to_hello(message):
     if message.content.startswith("!hello") or message.content.startswith("/hello"):
         channel1 = bot.get_channel(950459698870628372)
         await channel1.send("Hello from the other side!")
@@ -42,10 +57,10 @@ async def newgame(ctx):
     await channel1.send("Hello from the other side!")
 
 
-# @bot.command()
-# async def add(ctx, left: int, right: int):
-#     """Adds two numbers together."""
-#     await ctx.send(left + right)
+@bot.command()
+async def add(ctx, left: int, right: int):
+    """Adds two numbers together."""
+    await ctx.send(left + right)
 #
 # @bot.command()
 # async def roll(ctx, dice: str):

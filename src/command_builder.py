@@ -8,11 +8,12 @@ SERVER_ID = "476818108896772109"
 url = f"https://discord.com/api/applications/{APP_ID}/guilds/{SERVER_ID}/commands"
 
 # This is an example USER command, with a type of 2
-json = {
+json = json = {
     "name": "newgame",
     "type": 1,
-    "description": "Creates a new game"
+    "description": "Builds a new deck"
 }
+
 
 # For authorization, you can use either your bot token
 headers = {
@@ -22,6 +23,7 @@ headers = {
 
 # r = requests.post(url, headers=headers, json=json)
 r = requests.get(url, headers=headers)
+# r = requests.delete(url, headers=headers)
 print(r)
 print(r.reason)
 print(r.text)
