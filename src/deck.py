@@ -17,6 +17,8 @@ class DeckClass:
     def drawCard(self):
         try:
             chosenCard = random.choice(self.cards)
+            while chosenCard.n == "Error":
+                chosenCard = random.choice(self.cards)
             self.cards.remove(chosenCard)
             return chosenCard
         except IndexError:
@@ -30,7 +32,7 @@ class DeckClass:
             for c in self.cards:
                 if card.casefold() == c.n.casefold():
                     chosenCard = c
-                    self.cards.remove(chosenCard)
+                    if chosenCard.n != "Error": self.cards.remove(chosenCard)
                     return chosenCard
             print("Card not found in deck!")
             return cards.errored_card
