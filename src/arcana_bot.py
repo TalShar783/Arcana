@@ -67,8 +67,6 @@ async def on_raw_reaction_add(payload):
             for c in thisGame.deck.originalCards:
                 if c.n.casefold() == msgCard.casefold():
                     await msg.edit(embed=sendCardEmbed(c))
-            # await msg.channel.send(msg.embed)
-            # await msg.edit()
 
 
 @bot.event
