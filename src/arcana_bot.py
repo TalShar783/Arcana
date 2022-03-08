@@ -20,17 +20,24 @@ thisGame = game.GameClass()
 bot = commands.Bot(command_prefix='/', description=description, intents=intents)
 
 
-async def embedCard(ctx, card: cards.CardClass):
-    color = houseColor(card.getHouse)
-    ctx.send(embed=sendEmbed(f"**{card.show()}**", "", card.explain(), color))
+async def embedCardExplain(ctx, card: cards.CardClass):
+    color = houseColor(card.getHouse())
+    await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", card.explain(), color))
 
 
-async def sendEmbed(title: str, url: str, description: str, color):
+async def embedCardShow(ctx, card: cards.CardClass):
+    color = houseColor(card.getHouse())
+    await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", "", color))
+
+
+
+
+def sendEmbed(title: str, url: str, description: str, color):
     embed = discord.Embed(title=title, url=url, description=description, color=color)
     return embed
 
 
-async def houseColor(house):
+def houseColor(house):
     switcher = {
         "Darkness": discord.Colour.purple(),
         "Light": discord.Colour.yellow(),
@@ -81,7 +88,7 @@ async def draw(ctx, name: str, number: int = 1):
                     p.hand.remove(cards.errored_card)
                     await ctx.send("Error: No card found!")
                 else:
-                    await embedCard(ctx, drawnCard)
+                    await embedCardShow(ctx, drawnCard)
     return
 
 
@@ -94,12 +101,11 @@ async def pick(ctx, name: str, *args: str):
     for p in thisGame.players:
         if name == p.name:
             pickedCard = p.pick(thisGame.deck, card)
-            color = houseColor(pickedCard.getHouse())
             if pickedCard.n == "Error" or not isinstance(pickedCard, cards.CardClass):
                 p.hand.remove(cards.errored_card)
                 await ctx.send("Error: No card found!")
             else:
-                await ctx.send(embed=sendEmbed(f"**{p.name}\n\n {pickedCard.show()}**", "", pickedCard.explain(), color))
+                await embedCardShow(ctx, pickedCard)
 
 
 @bot.command()
@@ -112,8 +118,7 @@ async def showHand(ctx, player: str):
         if player in p.name:
             for c in p.hand:
                 output += f"\n**{c.show()}**"
-                color = houseColor(c.getHouse())
-                await ctx.send(embed=sendEmbed(f"**{c.show()}**", "", "", color))
+                await embedCardShow(ctx, c)
             print(output)
 
 
@@ -126,10 +131,7 @@ async def explainHand(ctx, player: str):
     for p in thisGame.players:
         if player in p.name:
             for c in p.hand:
-                color = houseColor(c.getHouse())
-                output += f"\n\n**{c.show()}:** {c.explain()}"
-                await ctx.send(embed=sendEmbed(f"**{c.show()}**", "", c.explain(), color))
-            print(output)
+                await embedCardExplain(ctx, c)
 
 
 @bot.command()
@@ -138,9 +140,8 @@ async def explain(ctx, *args: str):
     print(f"{ctx.author} has requested an explanation of the card {card}.")
     for c in thisGame.deck.originalCards:
         if card in c.n:
-            color = houseColor(c.getHouse())
             try:
-                await ctx.send(embed=sendEmbed(f"**{c.show()}**", "", c.explain(), color))
+                await embedCardExplain(ctx, c)
                 return
             except discord.errors.HTTPException:
                 number = random.randint(1, 10)
