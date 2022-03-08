@@ -25,11 +25,6 @@ def sendEmbed(title: str, url: str, description: str, color):
 
 def houseColor(house):
     switcher = {
-        # "Darkness": "#9c0399",
-        # "Light": "#fdff8f",
-        # "Fire": "#ff2f00",
-        # "Ice": "#00f7ff",
-        # "Unaligned": "#a1a1a1"
         "Darkness": discord.Colour.purple(),
         "Light": discord.Colour.yellow(),
         "Fire": discord.Colour.red(),
@@ -54,6 +49,13 @@ async def reset(ctx):
     print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
     await ctx.send("The game has been reset.")
 
+@bot.command()
+async def players(ctx):
+    print(f"{ctx.author} has requested to see a list of current players.")
+    output = ""
+    for p in thisGame.players:
+        output += f"{p.name}\n"
+    await ctx.send(output)
 
 @bot.command()
 async def draw(ctx, name: str, number: int = 1):
@@ -64,8 +66,27 @@ async def draw(ctx, name: str, number: int = 1):
             if name == p.name:
                 drawnCard = p.draw(thisGame.deck)
                 color = houseColor(drawnCard.getHouse())
-                await ctx.send(embed=sendEmbed(f"**{p.name}\n\n {drawnCard.show()}**", "", drawnCard.explain(), color))
+                if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+                        p.hand.remove(cards.errored_card)
+                        await ctx.send("Error: No card found!")
+                else: await ctx.send(embed=sendEmbed(f"**{p.name}\n\n {drawnCard.show()}**", "", drawnCard.explain(), color))
     return
+
+@bot.command()
+async def pick(ctx, name: str, *args: str):
+    card = " ".join(args)
+    print(f"{name} has requested to draw the card {card}.")
+    thisGame.addPlayer(name)
+    for p in thisGame.players:
+        if name == p.name:
+            pickedCard = p.pick(thisGame.deck, card)
+            color = houseColor(pickedCard.getHouse())
+            if pickedCard.n == "Error" or not isinstance(pickedCard, cards.CardClass):
+                p.hand.remove(cards.errored_card)
+                await ctx.send("Error: No card found!")
+            else: await ctx.send(embed=sendEmbed(f"**{p.name}\n\n {pickedCard.show()}**", "", pickedCard.explain(), color))
+
+
 
 @bot.command()
 async def showHand(ctx, player: str):
@@ -98,7 +119,7 @@ async def explainHand(ctx, player: str):
 async def explain(ctx, *args: str):
     card = " ".join(args)
     print(f"{ctx.author} has requested an explanation of the card {card}.")
-    for c in thisGame.deck.cards:
+    for c in thisGame.deck.originalCards:
         if card in c.n:
             color = houseColor(c.getHouse())
             try:

@@ -11,6 +11,15 @@ class Player:
         self.hand.append(drawnCard)
         return drawnCard
 
+    def pick(self, deck, card):
+        try:
+            pickedCard = deck.pickCard(card)
+            self.hand.append(pickedCard)
+            return pickedCard
+        except IndexError | AttributeError:
+            print("No card found!")
+            return cards.errored_card
+
     def showHand(self):
         for card in self.hand:
             print(f"{self.name}: {card.show()}")

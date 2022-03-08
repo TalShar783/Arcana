@@ -5,11 +5,14 @@ import cards
 class DeckClass:
     def __init__(self):
         self.cards = []
+        self.originalCards = []
         self.build()
 
     def build(self):
         for p in cards.CardClass.registry:
             self.cards.append(p)
+        for c in cards.CardClass.registry:
+            self.originalCards.append(c)
 
     def drawCard(self):
         try:
@@ -17,9 +20,26 @@ class DeckClass:
             self.cards.remove(chosenCard)
             return chosenCard
         except IndexError:
-            chosenCard = None
+            chosenCard = cards.errored_card
             print("You've run out of cards!")
-            return
+            return chosenCard
+
+    def pickCard(self, card: str):
+        chosenCard = None
+        try:
+            for c in self.cards:
+                if card == c.n:
+                    chosenCard = c
+                    self.cards.remove(chosenCard)
+                    return chosenCard
+            print("Card not found in deck!")
+            return cards.errored_card
+        except IndexError | AttributeError:
+            chosenCard = cards.errored_card
+            print("You've run out of cards!")
+            return chosenCard
+
+
     def shuffle(self):
         self.cards = []
         self.build()

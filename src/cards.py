@@ -12,14 +12,20 @@ class CardClass:
     def show(self):
         try:
             return(self.n)
-        except AttributeError:
-            return
+        except AttributeError | IndexError:
+            return errored_card.n
 
     def explain(self):
-        return self.d
+        try:
+            return self.d
+        except AttributeError | IndexError:
+            return errored_card.d
 
     def getHouse(self):
-        return self.h
+        try:
+            return self.h
+        except AttributeError | IndexError:
+            return errored_card.h
 
     def rollChalice(self):
         switcher = {
@@ -145,6 +151,8 @@ death = CardClass("Death",
 rebirth = CardClass("Rebirth",
                       "A bright omen, representing new life, thought to recall the rebirth of the Phaen way at the beginning of the Amaraen’dal, or the restoration of the Warden at the founding of Livania.",
                       "Unaligned")
+
+errored_card = CardClass("Error", "This card doesn't actually exist; it was given in error!", "Unaligned")
 
 
 # for p in CardClass.registry:
