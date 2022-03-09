@@ -17,7 +17,9 @@ intents = discord.Intents.all()
 
 thisGame = game.GameClass()
 
-bot = commands.Bot(command_prefix='/', description=description, intents=intents)
+prefix = "'/'"
+
+bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
 explainEmoji = bot.get_emoji(950860713138737202)
 
@@ -54,6 +56,22 @@ def houseColor(house):
     }
     return switcher.get(house)
 
+
+botInstructions = "I am the Voice of the Abyss.\n" \
+                  "I am your window into the past, present and future.\n" \
+                  "To speak to me, use the following:\n\n" \
+                  f"My command prefix is {prefix}. Prepend all below commands with that.\n\n" \
+                  "reset resets the deck and players, starting a new game.\n\n" \
+                  "players lists the names of the current players.\n\n" \
+                  "**draw** draws at least one card and adds a new player to the game if they're not already playing. It then adds those cards to the player's hand.\n" \
+                  "**draw** accepts up to two parameters, the first of which is required: the player's name, and the number of cards to draw.\n" \
+                  "Example: **draw Lenore 5** will draw 5 cards for the player Lenore.\n\n" \
+                  "**pick** takes a card name and draws that card from the deck, and adds it to the player's hand. Example: **pick Lenore King of Darkness**\n\n" \
+                  "**showHand** takes a player parameter and shows all the titles of the cards in their hand. Example: **showHand Lenore**\n\n" \
+                  "**explainHand** is like showHand, but also returns the descriptions of each card.\n\n" \
+                  "**explain** takes the name of a card and returns its explanation. Example: **explain King of Darkness**\n\n" \
+                  "Lastly, any time you see me react to a message with ❓, you may click that to request that I explain the card in question." \
+
 @bot.event
 async def on_raw_reaction_add(payload):
     if payload.user_id != 943668329871200258:
@@ -74,6 +92,11 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+
+@bot.event
+async def on_message(msg):
+    if bot.user.mentioned_in(msg):
+        await msg.channel.send(embed=sendEmbed("Voice of the Abyss: Instructions", "", botInstructions, discord.Colour.purple()))
 
 
 @bot.command()
