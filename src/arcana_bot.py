@@ -17,7 +17,7 @@ intents = discord.Intents.all()
 
 thisGame = game.GameClass()
 
-prefix = "'/'"
+prefix = '/'
 
 bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
@@ -93,8 +93,8 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
-@bot.event
-async def on_message(msg):
+@bot.listen('on_message')
+async def userMention(msg):
     if bot.user.mentioned_in(msg):
         await msg.channel.send(embed=sendEmbed("Voice of the Abyss: Instructions", "", botInstructions, discord.Colour.purple()))
 
