@@ -61,8 +61,8 @@ botInstructions = "I am the Voice of the Abyss.\n" \
                   "I am your window into the past, present and future.\n" \
                   "To speak to me, use the following:\n\n" \
                   f"My command prefix is {prefix}. Prepend all below commands with that.\n\n" \
-                  "reset resets the deck and players, starting a new game.\n\n" \
-                  "players lists the names of the current players.\n\n" \
+                  "**reset** resets the deck and players, starting a new game.\n\n" \
+                  "**players** lists the names of the current players.\n\n" \
                   "**draw** draws at least one card and adds a new player to the game if they're not already playing. It then adds those cards to the player's hand.\n" \
                   "**draw** accepts up to two parameters, the first of which is required: the player's name, and the number of cards to draw.\n" \
                   "Example: **draw Lenore 5** will draw 5 cards for the player Lenore.\n\n" \
