@@ -6,8 +6,9 @@ import cards
 import deck
 import player
 import game
+import token
 
-TOKEN = os.environ.get('BOT_TOKEN')
+TOKEN = token.token
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
@@ -49,7 +50,7 @@ def sendEmbed(title: str, url: str, description: str, color):
 def houseColor(house):
     switcher = {
         "Darkness": discord.Colour.purple(),
-        "Light": discord.Colour.yellow(),
+        "Light": discord.Colour.gold(),
         "Fire": discord.Colour.red(),
         "Ice": discord.Colour.blue(),
         "Unaligned": discord.Colour.dark_gray()
