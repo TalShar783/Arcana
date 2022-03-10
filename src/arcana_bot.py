@@ -6,9 +6,9 @@ import cards
 import deck
 import player
 import game
-import token
+import mytoken
 
-TOKEN = token.token
+TOKEN = mytoken.token
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
