@@ -1,2 +1,2 @@
-discord==118064
+discord==Stable 118064
 discord.py==1.7.3
