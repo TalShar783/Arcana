@@ -1,1 +1,1 @@
-worker: python3 arcana_bot.py
+worker: python3 /src/arcana_bot.py
