@@ -1,2 +1,1 @@
-discord==10.0.19044
 discord.py==1.7.3
