@@ -1,1 +1,2 @@
 web: gunicorn gettingstarted.wsgi
+worker: python3 arcana_bot.py
