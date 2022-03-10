@@ -21,7 +21,7 @@ prefix = '/'
 
 bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
-explainEmoji = bot.get_emoji(950860713138737202)
+explainEmoji = "❓"
 
 
 async def embedCardExplain(ctx, card: cards.CardClass):
