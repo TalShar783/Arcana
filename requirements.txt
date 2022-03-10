@@ -1,2 +1,2 @@
-discord==44572ae
+discord==118064
 discord.py==1.7.3
