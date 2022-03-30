@@ -10,9 +10,7 @@ import mytoken
 
 TOKEN = mytoken.token
 
-description = '''An example bot to showcase the discord.ext.commands extension
-module.
-There are a number of utility commands being showcased here.'''
+description = '''A bot to run a tarot-type deck of cards to predict your future.'''
 
 intents = discord.Intents.all()
 
