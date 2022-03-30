@@ -10,7 +10,7 @@ import mytoken
 import sys
 
 TOKEN = mytoken.token
-debugEnabled = True
+debugEnabled = False
 
 description = '''A more lightweight bot that just runs the forecast script. Meant to be used with a Task Scheduler.'''
 
@@ -23,7 +23,7 @@ prefix = '/'
 bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
 explainEmoji = "❓"
-subscribedChannels =[950437219859071067, 951182029242900530]
+subscribedChannels =[950459698870628372]
 
 # casting-fate: 950437219859071067
 # beta_testing: 951182029242900530

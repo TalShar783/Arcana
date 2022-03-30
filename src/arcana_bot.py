@@ -9,7 +9,7 @@ import game
 import mytoken
 
 TOKEN = mytoken.token
-debugEnabled = True
+debugEnabled = False
 
 description = '''A bot to run a tarot-type deck of cards to predict your future.'''
 
