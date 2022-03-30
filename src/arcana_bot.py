@@ -9,12 +9,13 @@ import game
 import mytoken
 
 TOKEN = mytoken.token
+debugEnabled = True
 
 description = '''A bot to run a tarot-type deck of cards to predict your future.'''
 
 intents = discord.Intents.all()
 
-# thisGame = game.GameClass()
+dummyGame = game.GameClass("3215648")
 
 prefix = '/'
 
@@ -24,21 +25,50 @@ explainEmoji = "❓"
 gamesList = []
 
 
-def checkGamesList(gameId):
-    for g in gamesList:
-        if (g.id == gameId):
-            return g
-        else:
-            return False
 
-def initializeGame(channel):
+def debug(message):
+    if debugEnabled == True:
+        print(message)
+
+def checkGamesList(gameId):
+    debug(f"Checking games list for existing game with gameID {gameId}...")
+    debug(f"Type passed for gameId is {type(gameId)}.")
+    if not gamesList:
+        debug("Games List is empty.")
+        return False
+    for g in gamesList:
+        if g.getId() == gameId:
+            debug(f"Game found: {g.getId()}. Variable type is {type(g.getId())}.")
+            return g
+    return False
+
+
+def initializeGame(channelRaw):
+    if type(channelRaw) == discord.channel.TextChannel:
+        channel = f"{channelRaw.id}"
+        debug(f"Recasting channel name {channelRaw} to channel ID {channel}.")
+    else:
+        channel = f"{channelRaw.id}"
+        debug(f"Channel {channel} did not need recasting.")
     if (checkGamesList(channel) == False):
         newGame = game.GameClass(channel)
+        debug(f"newGame object is {newGame}")
         gamesList.append(newGame)
-        print (f"New game added at object: {newGame}. Id is {newGame.getId()}.")
+        debug(f"New game added at object: {newGame}. Id is {newGame.getId()}.")
+        debug(f"gamesList is now the following: {gamesList}")
+        if debug == True:
+            for g in gamesList:
+                debug(f"Game Object: {g}. Game ID: {g.getId()}")
+                debug(g)
         return newGame
     else:
+        debug(f"Existing game found with object {channel} as its id.")
+        debug(f"gamesList is now the following: {gamesList}")
+        if debug == True:
+            for g in gamesList:
+                debug(f"Game Object: {g}. Game ID: {g.getId()}")
         return checkGamesList(channel)
+
 
 async def embedCardExplain(ctx, card: cards.CardClass):
     color = houseColor(card.getHouse())
@@ -88,19 +118,22 @@ botInstructions = "I am the Voice of the Abyss.\n" \
                   "**explain** takes the name of a card and returns its explanation. Example: **explain King of Darkness**\n\n" \
                   "Lastly, any time you see me react to a message with ❓, you may click that to request that I explain the card in question." \
 
+
 @bot.event
 async def on_raw_reaction_add(payload):
-    thisGame = initializeGame(payload.message.channel)
-    if payload.user_id != 943668329871200258:
-        if str(payload.emoji) == "❓":
-            messageId = payload.message_id
-            msg = await bot.get_channel(payload.channel_id).fetch_message(messageId)
-            if isinstance(msg.embeds[0].description, discord.embeds._EmptyEmbed):
-                await msg.clear_reaction("❓")
-                msgCard = msg.embeds[0].title.replace("*", "")
-                for c in thisGame.deck.originalCards:
-                    if c.n.casefold() == msgCard.casefold():
-                        await msg.edit(embed=sendCardEmbed(c))
+    messageId = payload.message_id
+    msg = await bot.get_channel(payload.channel_id).fetch_message(messageId)
+    if msg.author == bot.get_user(943668329871200258):
+        if payload.user_id != 943668329871200258:
+            if str(payload.emoji) == "❓":
+                if isinstance(msg.embeds[0].description, discord.embeds._EmptyEmbed):
+                    await msg.clear_reaction("❓")
+                    msgCard = msg.embeds[0].title.replace("*", "")
+                    debug(f"Channel ID: {payload.channel_id}. Type: {type(payload.channel_id)}")
+                    debug(f"Channel Object: {bot.get_channel(payload.channel_id)}. Type: {type(bot.get_channel(payload.channel_id))}")
+                    for c in dummyGame.deck.originalCards:
+                        if c.n.casefold() == msgCard.casefold():
+                            await msg.edit(embed=sendCardEmbed(c))
 
 
 @bot.event
@@ -110,14 +143,17 @@ async def on_ready():
     print(bot.user.id)
     print('------')
 
+
 @bot.listen('on_message')
 async def userMention(msg):
     if bot.user.mentioned_in(msg):
-        await msg.channel.send(embed=sendEmbed("Voice of the Abyss: Instructions", "", botInstructions, discord.Colour.purple()))
+        await msg.channel.send(
+            embed=sendEmbed("Voice of the Abyss: Instructions", "", botInstructions, discord.Colour.purple()))
 
 
 @bot.command()
 async def reset(ctx):
+    debug(f"Reset function called. Passed channel = {ctx.channel}")
     thisGame = initializeGame(ctx.channel)
     thisGame.reset()
     print("The game has been reset!")
@@ -165,8 +201,8 @@ async def pick(ctx, name: str, *args: str):
     thisGame.addPlayer(name)
     for p in thisGame.players:
         if name.casefold() == p.name.casefold():
-         await ctx.send(f"**{p.name}** has picked the card...")
-         pickedCard = p.pick(thisGame.deck, card)
+            await ctx.send(f"**{p.name}** has picked the card...")
+            pickedCard = p.pick(thisGame.deck, card)
         if pickedCard.n == "Error" or not isinstance(pickedCard, cards.CardClass):
             p.hand.remove(cards.errored_card)
             await ctx.send("Error: No card found!")
