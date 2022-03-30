@@ -21,7 +21,24 @@ prefix = '/'
 bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
 explainEmoji = "❓"
+gamesList = []
 
+
+def checkGamesList(gameId):
+    for g in gamesList:
+        if (g.id == gameId):
+            return g
+        else:
+            return False
+
+def initializeGame(channel):
+    if (checkGamesList(channel) == False):
+        newGame = game.GameClass(channel)
+        gamesList.append(newGame)
+        print (f"New game added at object: {newGame}. Id is {newGame.getId()}.")
+        return newGame
+    else:
+        return checkGamesList(channel)
 
 async def embedCardExplain(ctx, card: cards.CardClass):
     color = houseColor(card.getHouse())
@@ -73,6 +90,7 @@ botInstructions = "I am the Voice of the Abyss.\n" \
 
 @bot.event
 async def on_raw_reaction_add(payload):
+    thisGame = initializeGame(payload.message.channel)
     if payload.user_id != 943668329871200258:
         if str(payload.emoji) == "❓":
             messageId = payload.message_id
@@ -100,6 +118,7 @@ async def userMention(msg):
 
 @bot.command()
 async def reset(ctx):
+    thisGame = initializeGame(ctx.channel)
     thisGame.reset()
     print("The game has been reset!")
     print(f"Players: {thisGame.players}")
@@ -109,6 +128,7 @@ async def reset(ctx):
 
 @bot.command()
 async def players(ctx):
+    thisGame = initializeGame(ctx.channel)
     print(f"{ctx.author} has requested to see a list of current players.")
     output = ""
     for p in thisGame.players:
@@ -118,6 +138,7 @@ async def players(ctx):
 
 @bot.command()
 async def draw(ctx, name: str, number: int = 1):
+    thisGame = initializeGame(ctx.channel)
     thisGame.addPlayer(name)
     for p in thisGame.players:
         if name.casefold() == p.name.casefold():
@@ -138,6 +159,7 @@ async def draw(ctx, name: str, number: int = 1):
 
 @bot.command()
 async def pick(ctx, name: str, *args: str):
+    thisGame = initializeGame(ctx.channel)
     card = " ".join(args)
     print(f"{name} has requested to draw the card {card}.")
     thisGame.addPlayer(name)
@@ -154,6 +176,7 @@ async def pick(ctx, name: str, *args: str):
 
 @bot.command()
 async def showHand(ctx, player: str):
+    thisGame = initializeGame(ctx.channel)
     print(f"{ctx.author} has requested to see {player}'s hand.")
     output: str = ""
     output += f"{player}: "
@@ -170,6 +193,7 @@ async def showHand(ctx, player: str):
 
 @bot.command()
 async def explainHand(ctx, player: str):
+    thisGame = initializeGame(ctx.channel)
     print(f"{ctx.author} has requested to see {player}'s cards and their meaning.")
     await ctx.send(f"I shall now explain **{player}**'s hand...")
     output: str = ""
@@ -182,6 +206,7 @@ async def explainHand(ctx, player: str):
 
 @bot.command()
 async def explain(ctx, *args: str):
+    thisGame = initializeGame(ctx.channel)
     card = " ".join(args)
     print(f"{ctx.author} has requested an explanation of the card {card}.")
     for c in thisGame.deck.originalCards:
