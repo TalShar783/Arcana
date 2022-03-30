@@ -26,6 +26,18 @@ class DeckClass:
             print("You've run out of cards!")
             return chosenCard
 
+
+    def drawCardWithoutRemove(self):
+        try:
+            chosenCard = random.choice(self.cards)
+            while chosenCard.n == "Error":
+                chosenCard = random.choice(self.cards)
+            return chosenCard
+        except IndexError:
+            chosenCard = cards.errored_card
+            print("You've run out of cards!")
+            return chosenCard
+
     def pickCard(self, card: str):
         chosenCard = None
         try:
