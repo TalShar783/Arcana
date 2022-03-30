@@ -15,7 +15,7 @@ description = '''A bot to run a tarot-type deck of cards to predict your future.
 
 intents = discord.Intents.all()
 
-dummyGame = game.GameClass("3215648")
+dummyGame = game.GameClass("dummyGame")
 
 prefix = '/'
 
@@ -102,7 +102,6 @@ def houseColor(house):
     }
     return switcher.get(house)
 
-
 botInstructions = "I am the Voice of the Abyss.\n" \
                   "I am your window into the past, present and future.\n" \
                   "To speak to me, use the following:\n\n" \
@@ -160,6 +159,35 @@ async def reset(ctx):
     print(f"Players: {thisGame.players}")
     print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
     await ctx.send("The game has been reset.")
+
+
+
+@bot.command()
+async def forecast(ctx):
+    await ctx.send(f"Your forecast for the morning: ")
+    debug(f"Drawing morning forecast...")
+    drawnCard = dummyGame.deck.drawCard()
+    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+        await ctx.send("Error: No card found!")
+    else:
+        await embedCardShow(ctx, drawnCard)
+    await ctx.send(f"Your forecast for the afternoon: ")
+    debug(f"Drawing afternoon forecast...")
+    drawnCard = dummyGame.deck.drawCard()
+    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+        await ctx.send("Error: No card found!")
+    else:
+        await embedCardShow(ctx, drawnCard)
+    await ctx.send(f"Your forecast for the evening: ")
+    debug(f"Drawing evening forecast...")
+    drawnCard = dummyGame.deck.drawCard()
+    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+        await ctx.send("Error: No card found!")
+    else:
+        await embedCardShow(ctx, drawnCard)
+    dummyGame.reset()
+    return
+
 
 
 @bot.command()
