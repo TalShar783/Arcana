@@ -78,32 +78,32 @@ inferno = CardClass("Inferno",
                          "Fire")
 
 king_of_darkness = CardClass("King of Darkness",
-                    "Historically representative of Altherion, the architect of all suffering for the children of the Phaen, though often refers to Elimatar now that he has gained ascendancy over his father.",
+                    "The appearance of the King of Darkness reveals a force of malice, working to cause harm or suffering within the recipient’s life. The King of Darkness is often an impersonal force: the leader of a faction that is the source of the recipient’s woes, or the author of a tide of metaphorical darkness whose rippling effects bring misery and loss. Above all, it is a warning: one’s suffering is not random. It is the work of a malicious enemy.",
                     "Darkness")
 knight_of_darkness = CardClass("Knight of Darkness",
-                     "Historically representative of Elimatar, the blade of Darkness that destroyed everything the Saen’dal and their makers held dear.",
+                     "Where the King is distant, the Knight is intimate. A personal rival, a bitter foe, a cruel tormentor who knows the recipient, and whom the recipient knows in return. The appearance of the Knight often foretells direct conflict with this adversary. It means that one’s steps forward will be contested, not by fickle chance, but by an active, hostile will.",
                      "Darkness")
 soldier_of_darkness = CardClass("Soldier of Darkness",
-                     "Representative of the Ul’ssan, the generals and commanders who waged the First War against the Phaen and their children, and who lurk beneath the world plotting vengeance.",
+                     "Where the King is distant, and the Knight is intimate, the Soldiers are faceless but immediate. They are pawns, for whom the recipient is but one face among many. The appearance of the Soldier indicates coming hardship and conflict. Most often, this will be a battle in which the recipient will be outnumbered.",
                      "Darkness")
 child_of_darkness = CardClass("Child of Darkness",
-                     "Representative of the Dak’ashi, Lomath, and the other spawn of Altherion’s machinations and the minions of True Darkness.",
+                     "Where the other servants of Darkness act with intent, a Child is merely the product of its circumstances. This card represents the unintended consequences of evil; the aftershocks left in evil’s wake that do its work unbeknownst to it. The appearance of the Child foretells the fallout from the King’s schemes, a twist of fate or betrayal as a result of evil deeds. ",
                      "Darkness")
 chaos = CardClass("Chaos",
-                     "Represents suffering, chaos, disorder, and the dissolution of society; the defeat of the Phaen and the triumph of Altherion.",
+                     "Represents the chaos and bereavement that are the fulfillment of the King of Darkness’ plans. Foretells a time of uncertainty, fear, and loss for the recipient.",
                      "Darkness")
 the_desert = CardClass("The Desert",
-                      "Represents Kaladyn, the wastelands from which the threat of Altherion and the forces of Darkness arose.",
+                      "Represents the aftermath of evil, the lifelessness left in the wake of Darkness. Foretells the fall or defilement of familiar places, a loss of a home or haven.",
                       "Darkness")
 
 queen_of_light = CardClass("Queen of Light",
-                       "Represents the Mother of All, creator of the Saen’dal, Avun, Shayen, Berellen, and Apsaeri.",
+                       "One of the brightest omens the Saen’dal Arcana can bestow, the Queen of Light is the equal and opposite of the King of Darkness. Her appearance indicates the presence in one’s life of a benefactor or provider who wishes to see the recipient succeed. She is an omen of hope: no matter how dark one’s circumstances may seem, the Queen reaches out with support and charity, even if she is unseen.",
                        "Light")
 hero_of_light = CardClass("Hero of Light",
-                       "Represents Fleetmaster Dasion, the heroic leader of the Phaen, champion of the Mother.",
+                       "The Queen’s presence is often distant or subtle, yet the Hero’s is visible and immediate. His appearance indicates an ally, a friend, a comrade-in-arms, one who will bear the struggles and trials of life alongside the recipient. Drawing the Hero may foretell the arrival of a champion, or it may simply indicate that one is not so alone as he or she believes.",
                        "Light")
 painter_of_light = CardClass("Painter of Light",
-                       "Represents the Architects, the leaders of the Phaen who designed the biomes and biology of Arion, and who built the legendary technologies upon which they relied.",
+                       "The Painter does not wield the power or influence of the Queen, nor the shining sword of the Hero, but she is a foe of the Darkness all the same. Her appearance indicates something of beauty and worth in the recipient’s life: a bastion to which one can retreat in the face of suffering and loss, whether she takes the form of a person, a work of art, or a simple pleasure from which the recipient might draw strength. If the Painter appears, one should devote himself to the search for beauty in his life; often, it will be lurking nearby, unseen.",
                        "Light")
 sword_of_light = CardClass("Sword of Light",
                        "Represents the Keystones and their bearers, the six elite champions who represent the best of their species.",
@@ -139,7 +139,7 @@ the_consort = CardClass("The Consort",
 the_maiden = CardClass("The Maiden",
                       "An ambiguous card; representing true love. Thought to recall images of a young Silanah, when hers was the most sought-after hand in all of the Amaraen’dal.",
                       "Unaligned")
-the_man_in_chains = CardClass("The Main In Chains",
+the_man_in_chains = CardClass("The Man In Chains",
                       "A feared card; represents the Three Sisters and their machinations, as well as the damned souls trapped in their thrall.",
                       "Unaligned")
 the_ghost = CardClass("The Ghost",
