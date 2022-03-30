@@ -115,6 +115,7 @@ botInstructions = "I am the Voice of the Abyss.\n" \
                   "**showHand** takes a player parameter and shows all the titles of the cards in their hand. Example: **showHand Lenore**\n\n" \
                   "**explainHand** is like showHand, but also returns the descriptions of each card.\n\n" \
                   "**explain** takes the name of a card and returns its explanation. Example: **explain King of Darkness**\n\n" \
+                  "**forecast** draws you three cards, unassociated with any game or player, to predict your morning, afternoon, and evening.\n\n" \
                   "Lastly, any time you see me react to a message with ❓, you may click that to request that I explain the card in question." \
 
 
