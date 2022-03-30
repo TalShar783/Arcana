@@ -4,9 +4,16 @@ import deck
 import player
 
 class GameClass:
-    def __init__(self):
+    def __init__(self, id):
         self.deck = deck.DeckClass()
         self.players = []
+        self.id = id
+
+    def getId(self):
+        return self.id
+
+    def setId(self, id):
+        self.id = id
 
     def getPlayers(self):
         return self.players

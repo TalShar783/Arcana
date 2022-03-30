@@ -14,7 +14,7 @@ description = '''A bot to run a tarot-type deck of cards to predict your future.
 
 intents = discord.Intents.all()
 
-thisGame = game.GameClass()
+# thisGame = game.GameClass()
 
 prefix = '/'
 
