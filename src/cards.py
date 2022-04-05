@@ -40,22 +40,22 @@ class CardClass:
 
 
 lord_of_ice = CardClass("Lord of Ice",
-                        "Originally representative of Archon Asrahmat, the Warden of Souls, creator of the Amaraen’dal, the Society of Light. Now associated equally with Illeonai Raivan, the High King of Livania.",
+                        "A reflection of the Saen’dal‘s greatest leaders, the Lord of Ice represents wisdom, leadership, and right action. As a card in a fortune, it foretells guidance and good advice. The recipient would also be wise to look back on recent conversations and attempt to glean kernels of wisdom that may have escaped their initial understanding. ",
                         "Ice")
 lady_of_ice = CardClass("Lady of Ice",
-                        "Originally representative of Silanah, the favored daughter of Asrahmat and spiritual guide of the Amaraen’dal. Now represents her as the Warden of Souls.",
+                        "As the Lord is a figure of leadership, the Lady is a guardian. She recalls the mythic figure of Silanah, who delivered her people from their greatest foes and preserved their way of life for millennia. Her appearance foretells the arrival of a protector, whether in the form of a parent, teacher, friend, or colleague. In other cases, it might guide the recipient to renew relationships with such figures, in order to better prepare for the inevitable arrival of the proverbial Winter.",
                         "Ice")
 sage_of_ice = CardClass("Sage of Ice",
-                        "Represents the Four Pillars, the Archangels,  of the Angels of Death, the elite leadership of the Warden’s holy warriors and priests.",
+                        "The Sage of Ice is straightforward. His appearance in the Arcana represents learning and discovery, the acquisition of valuable knowledge that will be of benefit to the recipient and those close to them. As before, this could foretell a future revelation, or guide the recipient to re-examine the knowledge they already possess. ",
                         "Ice")
-servant_of_ice = CardClass("Sage of Ice",
-                        "Represents the Angels of Death as an organization, the servants of justice and salvation in the Society of Light, and later, in the Livanian Empire.",
+servant_of_ice = CardClass("Servant of Ice",
+                        "The Servant recalls the righteous knights who fought not only for the safety of the Saen’dal, but for the preservation of their very souls. It symbolizes duty, devotion, and service to a righteous cause. As an omen, it is often understood as a call to devote oneself to such a cause, or to seek a cause worthy of such devotion if one seems absent. It can also be taken as a confirmation of the righteousness of one’s path.",
                         "Ice")
-protection = CardClass("Protection",
-                       "Represents guardianship and safekeeping, specifically the Warden and her servants’ salvation of the souls of the dead.",
+preservation = CardClass("Preservation",
+                       "Along with their association between Winter and community, the authors of the Arcana also believed in the role of collective memory in the preservation of their people. As such, the card Preservation recalls not only physical safety, but remembrance. When drawn, it calls on the recipient to remember the past: its people, events, and lessons. It is less an omen and more a demand: keep your past close, or be lost in the future. ",
                        "Ice")
 winter = CardClass("Winter",
-                       "Historically represented Tharyd, specifically the Society of Light and the domains of the north, beneath the Tower of Ice. Now associated with the Livanian Empire.",
+                       "Winters in the ancient lands of the Saen’dal were harsh. They demanded concerted, communal efforts to ensure their people would survive to see the spring. As such, they developed a powerful association between the winter and community. In the Arcana, this card represents a convergence: the coming together of friends, family, and allies for the achievement of a collective goal. It foretells difficulty, yes, but difficulty that can be overcome with the aid of one’s people. ",
                        "Ice")
 
 lord_of_fire = CardClass("Lord of Fire",
