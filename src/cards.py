@@ -59,26 +59,26 @@ winter = CardClass("Winter",
                        "Ice")
 
 lord_of_fire = CardClass("Lord of Fire",
-                       "Historically associated with the Four Archdemons, the highest powers of Hell.",
+                       "Distinct from the King of Darkness in several ways, but an ill omen regardless. The Lord of Fire reveals a force of destruction, rather than evil, blind to causes and allegiances and driven by the need to ruin, rather than selfish desire. As a window into the future, the Lord of Fire’s appearance indicates an active and persistent threat to the recipient’s physical safety: an invading army, an oncoming storm, a rumbling volcano—something that cannot be reasoned with, and seeks only to destroy.",
                        "Fire")
 lady_of_fire = CardClass("Lady of Fire",
-                        "Historically associated with temptresses and deceivers, usually of the demonic variety.",
+                        "The Lady of Fire represents danger, just as the Lord does. However, her flavor of threat is very different: she represents a threat from within, most usually in the form of some temptation or personal weakness. She is an omen of seduction, but not necessarily by some scarlet-haired temptress—whether the allure of power, the promise of pleasure, or simply the siren call of greed and gluttony, the Lady of Fire is a warning against ruin wrought by one’s own hands.",
                         "Fire")
 demon_of_fire = CardClass("Demon of Fire",
-                         "Historically representative of Demons, the soldiers in the armies of Hell.",
+                         "As with the whole of the House of Fire, the Demon warns of danger to come. However, as the Lord represents danger on a grand scale, the Demon represents it on a personal level, though this makes it no less threatening to the recipient. Often conflated with Knight of Darkness, the two are actually quite distinct: the Knight represents a figure of personal animosity, a long-held grudge, a rivalry. The Demon, on the other hand, represents a threat with no history, no targeted malice. A blind robbery, a random act of violence, a target of opportunity—these are manifestations of the Demon. As an omen, it calls for vigilance against such threats, and avoidance of the circumstances in which they are likely to arrive.",
                          "Fire")
 slave_of_fire = CardClass("Slave of Fire",
-                         "Represents souls entangled and controlled by the plots and powers of Hell, willing or not.",
+                         "Just as effects are slaves to their causes, so it is with the Slave of Fire. A very straightforward omen, the Slave of Fire warns of danger that follows from one’s own choices. The appearance of the Slave does not necessarily condemn the recipient’s actions—even the most noble actions can still bring about danger—but it warns that they may have had unintended side effects. Drawing this card may prompt an inspection of recent actions or a reconsideration of plans, with the goal of unmasking the potentially harmful consequences. ",
                          "Fire")
 destruction = CardClass("Destruction",
-                         "Represents active destruction and devastation, unleashed by the Four Archdemons upon the souls and lives of the world.",
+                         "A brighter omen than Chaos, but not by much. The Saen’dal separated the two along an important axis: pain versus suffering. Chaos entails the latter: sorrow and emotional pain that will scar the very soul. Destruction foretells the former: physical pain, the loss of property, and scars for the flesh. The Saen’dal viewed these things as secondary, to the point where some considered Destruction a positive omen: such losses could be recouped, and even a maimed body could house a joyful soul.",
                          "Fire")
 inferno = CardClass("Inferno",
-                         "Represents, quite simply, Hell, and in some cases, the continent of Kansayd, domain of volcanic hellscapes and terrible monsters.",
+                         "Like Sea and Desert, the Inferno is a reference to the Saen’dal homeworld of Arion. However, unlike the lands of Light and Darkness, Inferno reflects another realm: the Four Hells, wherein the original Archdaemons made their abode. Regardless of its historical allusions, the modern card has a very simple meaning: the recipient is currently in danger, whether they know it or not. Be it an abusive relationship, a dangerous job, or an unsafe dwelling, to draw the Inferno means that one is there, and should immediately re-examine his life to locate and elude danger.",
                          "Fire")
 
 king_of_darkness = CardClass("King of Darkness",
-                    "The appearance of the King of Darkness reveals a force of malice, working to cause harm or suffering within the recipient’s life. The King of Darkness is often an impersonal force: the leader of a faction that is the source of the recipient’s woes, or the author of a tide of metaphorical darkness whose rippling effects bring misery and loss. Above all, it is a warning: one’s suffering is not random. It is the work of a malicious enemy.",
+                    "Where the King is distant, the Knight is intimate. A personal rival, a bitter foe, a cruel tormentor who knows the recipient, and whom the recipient knows in return. The appearance of the Knight often foretells direct conflict with this adversary. It means that one’s steps forward will be contested, not by fickle chance, but by an active, hostile will.",
                     "Darkness")
 knight_of_darkness = CardClass("Knight of Darkness",
                      "Where the King is distant, the Knight is intimate. A personal rival, a bitter foe, a cruel tormentor who knows the recipient, and whom the recipient knows in return. The appearance of the Knight often foretells direct conflict with this adversary. It means that one’s steps forward will be contested, not by fickle chance, but by an active, hostile will.",
@@ -90,10 +90,10 @@ child_of_darkness = CardClass("Child of Darkness",
                      "Where the other servants of Darkness act with intent, a Child is merely the product of its circumstances. This card represents the unintended consequences of evil; the aftershocks left in evil’s wake that do its work unbeknownst to it. The appearance of the Child foretells the fallout from the King’s schemes, a twist of fate or betrayal as a result of evil deeds. ",
                      "Darkness")
 chaos = CardClass("Chaos",
-                     "Represents the chaos and bereavement that are the fulfillment of the King of Darkness’ plans. Foretells a time of uncertainty, fear, and loss for the recipient.",
+                     "Another historical reference to the Saen’dal’s past, Chaos refers to the collapse of their civilization as a result of their creators’ tragic deaths. Though this context is largely forgotten, the card’s presence in the Arcana represents the chaos and bereavement that are the fulfillment of the King of Darkness’ plans. A dark omen, it foretells a time of uncertainty, fear, or loss; a reshuffling of circumstances that will bring sorrow and suffering.",
                      "Darkness")
 the_desert = CardClass("The Desert",
-                      "Represents the aftermath of evil, the lifelessness left in the wake of Darkness. Foretells the fall or defilement of familiar places, a loss of a home or haven.",
+                      "A historical reference to the lifeless deserts of the continent Kaladyn, on the Saen’dal homeworld of Arion, wherein dwelt the ancient enemies of their people. The Desert represents the abode of evil, the place in which Darkness makes its home. In the Arcana, it is most often interpreted as a warning against a particular place, or a sign that one should relocate to a new home. In a more metaphorical light, it can mean the exhaustion of possibilities; in this way, the Desert may act as an admonition against becoming stuck in one’s ways.",
                       "Darkness")
 
 queen_of_light = CardClass("Queen of Light",
@@ -106,13 +106,13 @@ painter_of_light = CardClass("Painter of Light",
                        "The Painter does not wield the power or influence of the Queen, nor the shining sword of the Hero, but she is a foe of the Darkness all the same. Her appearance indicates something of beauty and worth in the recipient’s life: a bastion to which one can retreat in the face of suffering and loss, whether she takes the form of a person, a work of art, or a simple pleasure from which the recipient might draw strength. If the Painter appears, one should devote himself to the search for beauty in his life; often, it will be lurking nearby, unseen.",
                        "Light")
 sword_of_light = CardClass("Sword of Light",
-                       "Represents the Keystones and their bearers, the six elite champions who represent the best of their species.",
+                       "A weapon against the Darkness, but without a will of its own. The appearance of the Sword indicates a tool, a weapon, a gift, a boon—something that will aid in the recipient’s struggles, but something that must be actively wielded, rather than providing assistance itself. The Sword of Light can foretell the arrival or finding of such a tool, but it is often thought of as a reminder of assets forgotten; the tools the recipient already possesses, but has overlooked. ",
                        "Light")
 order = CardClass("Order",
-                       "Represents unity and stability, the Phaen peace that covered Arion during their reign as its masters.",
+                       "While many modern audiences might find the concept of “Order” stifling or restrictive, the Saen’dal culture that birthed the Arcana held it as their highest aspiration: a return to the orderly state of the world in which their gods, the Phaen, held dominion over creation. As such, Order is one of the brightest omens the cards can offer: a promise of clarity, of calm, of peace. It promises that Darkness is not indomitable, and that a resolution to one’s struggles is on the horizon.",
                        "Light")
 the_sea = CardClass("The Sea",
-                       "Represents the Sea of Sorrows which once contained Phaedyn, and the Tower of Light that is all that remains of the Phaen.",
+                       "Like The Desert, The Sea is a reference to the world from whence the Saen’dal came: the Sea of Light, the grave of their creators and a place of tranquility and peace. The Sea represents a place of safety, and in the modern, fortune-telling context of the Arcana, it may be interpreted as a call to action: to seek out peace and harmony, whether physical or spiritual.",
                        "Light")
 
 the_tower = CardClass("The Tower",
