@@ -1,10 +1,6 @@
 import discord
-import os
 from discord.ext import commands
-import random
 import cards
-import deck
-import player
 import game
 import mytoken
 import sys
@@ -23,17 +19,18 @@ prefix = '/'
 bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
 explainEmoji = "❓"
-subscribedChannels =[950437219859071067,951182029242900530]
+subscribedChannels = [950437219859071067, 951182029242900530]
+
 
 # casting-fate: 950437219859071067
 # beta_testing: 951182029242900530
 # bot-testing: 950459698870628372
 
 
-
 def debug(message):
-    if debugEnabled == True:
+    if debugEnabled:
         print(message)
+
 
 async def embedCardExplain(ctx, card: cards.CardClass):
     color = houseColor(card.getHouse())
@@ -67,6 +64,7 @@ def houseColor(house):
     }
     return switcher.get(house)
 
+
 @bot.event
 async def on_ready():
     print('Logged in as')
@@ -78,30 +76,16 @@ async def on_ready():
     sys.exit()
 
 
-
 async def forecast(c):
-    await c.send("Good morning! I bear tidings from the starry abyss concerning your fate today.")
-    await c.send(f"Your forecast for the morning: ")
-    debug(f"Drawing morning forecast...")
-    drawnCard = dummyGame.deck.drawCard()
-    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
-        await c.send("Error: No card found!")
-    else:
-        await embedCardShow(c, drawnCard)
-    await c.send(f"Your forecast for the afternoon: ")
-    debug(f"Drawing afternoon forecast...")
-    drawnCard = dummyGame.deck.drawCard()
-    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
-        await c.send("Error: No card found!")
-    else:
-        await embedCardShow(c, drawnCard)
-    await c.send(f"Your forecast for the evening: ")
-    debug(f"Drawing evening forecast...")
+    await c.send("Good morning! I bear tidings from the starry abyss concerning your fate today. \n The card that "
+                 "governs your fate today is...")
+    debug(f"Drawing forecast...")
     drawnCard = dummyGame.deck.drawCard()
     if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
         await c.send("Error: No card found!")
     else:
         await embedCardShow(c, drawnCard)
     dummyGame.reset()
+
 
 bot.run(TOKEN)
