@@ -15,19 +15,19 @@ class CardClass:
     def show(self):
         try:
             return self.n
-        except AttributeError | IndexError:
+        except Exception:
             return errored_card.n
 
     def explain(self):
         try:
             return self.d
-        except AttributeError | IndexError:
+        except Exception:
             return errored_card.d
 
     def getHouse(self):
         try:
             return self.h
-        except AttributeError | IndexError:
+        except Exception:
             return errored_card.h
 
     def rollChalice(self):
