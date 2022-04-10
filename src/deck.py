@@ -13,12 +13,18 @@ class DeckClass:
             self.cards.append(p)
         for c in cards.CardClass.registry:
             self.originalCards.append(c)
+        random.shuffle(self.cards)
 
     def drawCard(self):
+        if len(self.cards) <= 1:
+            chosenCard = cards.errored_card
+            print("You've run out of cards!")
+            return chosenCard
+        chosenCard = self.cards[0]
+        if chosenCard.n == "Error":
+            self.cards.append(self.cards.pop(self.cards.index(self.cards[0])))
+            chosenCard = self.cards[0]
         try:
-            chosenCard = random.choice(self.cards)
-            while chosenCard.n == "Error":
-                chosenCard = random.choice(self.cards)
             self.cards.remove(chosenCard)
             return chosenCard
         except IndexError:
@@ -28,10 +34,15 @@ class DeckClass:
 
 
     def drawCardWithoutRemove(self):
+        if len(self.cards) <= 1:
+            chosenCard = cards.errored_card
+            print("You've run out of cards!")
+            return chosenCard
+        chosenCard = self.cards[0]
+        if chosenCard.n == "Error":
+            self.cards.append(self.cards.pop(self.cards.index(0)))
+            chosenCard = self.cards[0]
         try:
-            chosenCard = random.choice(self.cards)
-            while chosenCard.n == "Error":
-                chosenCard = random.choice(self.cards)
             return chosenCard
         except IndexError:
             chosenCard = cards.errored_card

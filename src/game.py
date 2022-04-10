@@ -37,13 +37,13 @@ class GameClass:
         self.players = []
 
 
+
+# thisGame = GameClass(123)
 #
-# thisGame = GameClass()
-# #
 # thisGame.trish = thisGame.addPlayer("Trish")
 # thisGame.bob = thisGame.addPlayer("Bob")
-#
-#
+
+
 # for p in thisGame.players:
 #     p.draw(thisGame.deck)
 #     p.draw(thisGame.deck)
@@ -51,21 +51,11 @@ class GameClass:
 #     p.draw(thisGame.deck)
 #     p.draw(thisGame.deck)
 #     print(p.name)
-#     p.explainHand()
-#
-# thisGame.trish.draw(thisGame.deck)
-# thisGame.trish.draw(thisGame.deck)
-# thisGame.trish.draw(thisGame.deck)
-# thisGame.trish.draw(thisGame.deck)
-# thisGame.trish.draw(thisGame.deck)
-# thisGame.trish.explainHand()
-#
-# thisGame.bob.draw(thisGame.deck)
-# thisGame.bob.draw(thisGame.deck)
-# thisGame.bob.draw(thisGame.deck)
-# thisGame.bob.draw(thisGame.deck)
-# thisGame.bob.draw(thisGame.deck)
-# thisGame.bob.draw(thisGame.deck)
-# thisGame.bob.draw(thisGame.deck)
-# thisGame.bob.explainHand()
+#     p.showHand()
+
 # print(thisGame.deck.cardsRemaining())
+
+# c = 40
+# for x in range(c):
+#     print(thisGame.trish.draw(thisGame.deck).n)
+#     print(thisGame.deck.cardsRemaining())
