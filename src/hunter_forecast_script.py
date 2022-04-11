@@ -56,10 +56,14 @@ def sendEmbed(title: str, url: str, description: str, color):
 
 def houseColor(house):
     switcher = {
-        "Darkness": discord.Colour.purple(),
-        "Light": discord.Colour.gold(),
-        "Fire": discord.Colour.red(),
-        "Ice": discord.Colour.blue(),
+        "Dead": discord.Colour.darker_gray(),
+        "Fae": discord.Colour.dark_green(),
+        "Damned": discord.Colour.dark_red(),
+        "Divine": discord.Colour.gold(),
+        "Eldritch": discord.Colour.dark_purple(),
+        "Beasts": discord.Colour.dark_orange(),
+        "Myths": discord.Colour.dark_blue(),
+        "Hunters": discord.Colour.teal(),
         "Unaligned": discord.Colour.dark_gray()
     }
     return switcher.get(house)
