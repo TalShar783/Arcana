@@ -639,9 +639,9 @@ hydra = CardClass(
     "Myths")
 yggdrasil = CardClass(
     "Yggdrasil",
-    "The many-headed monster that was defeated by the demigod Heracles, it was said that if one severed a head of "
-    "this creature, two more would spring forth to take its place. This card indicates that the holder will triumph "
-    "over one of their problems, only to have more spring up as a direct result of their victory.",
+    "The World Tree, said to contain all of the nine realms known to Norse myth. This card speaks of the "
+    "interconnectedness and interdependence of all things. It is often an omen to caution the holder to carefully "
+    "consider the consequences of some prospective action, or to look deeper into an apparent coincidence.",
     "Myths")
 hunter = CardClass(
     "Hunter",
