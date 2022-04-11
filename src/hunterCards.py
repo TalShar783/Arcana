@@ -798,9 +798,11 @@ hosogami = CardClass(
 
 errored_card = CardClass("Error", "This card doesn't actually exist; it was given in error!", "Unaligned")
 
-for p in CardClass.registry:
-    print(p.n)
-
-for p in CardClass.registry:
-    p.show()
-    print(p.explain())
+#TODO: Give the Deck a type that will allow users to swap from the Saen'dal Arcana to the Hunter's Fate deck.
+#
+# for p in CardClass.registry:
+#     print(p.n)
+#
+# for p in CardClass.registry:
+#     p.show()
+#     print(p.explain())

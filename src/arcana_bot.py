@@ -98,6 +98,14 @@ def houseColor(house):
         "Light": discord.Colour.gold(),
         "Fire": discord.Colour.red(),
         "Ice": discord.Colour.blue(),
+        "Dead": discord.Colour.darker_gray(),
+        "Fey": discord.Colour.dark_green(),
+        "Damned": discord.Colour.dark_red(),
+        "Divine": discord.Colour.gold(),
+        "Eldritch": discord.Colour.dark_purple(),
+        "Beasts": discord.Colour.dark_orange(),
+        "Myths": discord.Colour.dark_blue(),
+        "Hunters": discord.Colour.brand_red(),
         "Unaligned": discord.Colour.dark_gray()
     }
     return switcher.get(house)
@@ -152,10 +160,10 @@ async def userMention(msg):
 
 
 @bot.command()
-async def reset(ctx):
+async def reset(ctx, card_set=cards):
     debug(f"Reset function called. Passed channel = {ctx.channel}")
     thisGame = initializeGame(ctx.channel)
-    thisGame.reset()
+    thisGame.reset(card_set)
     print("The game has been reset!")
     print(f"Players: {thisGame.players}")
     print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")

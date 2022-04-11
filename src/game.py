@@ -1,11 +1,11 @@
-import random
 import cards
 import deck
 import player
+import hunterCards
 
 class GameClass:
-    def __init__(self, id):
-        self.deck = deck.DeckClass()
+    def __init__(self, id, cardSet=cards):
+        self.deck = deck.DeckClass(cardSet)
         self.players = []
         self.id = id
 
@@ -32,7 +32,8 @@ class GameClass:
         else:
             return
 
-    def reset(self):
+    def reset(self, card_set=cards):
+        self.deck.setCardSet(card_set)
         self.deck.shuffle()
         self.players = []
 
@@ -42,8 +43,21 @@ class GameClass:
 #
 # thisGame.trish = thisGame.addPlayer("Trish")
 # thisGame.bob = thisGame.addPlayer("Bob")
-
-
+#
+#
+# for p in thisGame.players:
+#     p.draw(thisGame.deck)
+#     p.draw(thisGame.deck)
+#     p.draw(thisGame.deck)
+#     p.draw(thisGame.deck)
+#     p.draw(thisGame.deck)
+#     print(p.name)
+#     p.showHand()
+#
+# thisGame.reset(hunterCards)
+#
+# thisGame.trish = thisGame.addPlayer("Trish")
+# thisGame.bob = thisGame.addPlayer("Bob")
 # for p in thisGame.players:
 #     p.draw(thisGame.deck)
 #     p.draw(thisGame.deck)

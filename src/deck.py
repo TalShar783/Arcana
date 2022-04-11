@@ -1,82 +1,88 @@
 import random
 import cards
+import hunterCards
 
 
 class DeckClass:
-    def __init__(self):
-        self.cards = []
+    def __init__(self, card_set=cards):
+        self.myCards = []
         self.originalCards = []
+        self.card_set = card_set
         self.build()
 
     def build(self):
-        for p in cards.CardClass.registry:
-            self.cards.append(p)
-        for c in cards.CardClass.registry:
+        for p in self.card_set.CardClass.registry:
+            self.myCards.append(p)
+        for c in self.card_set.CardClass.registry:
             self.originalCards.append(c)
-        random.shuffle(self.cards)
+        random.shuffle(self.myCards)
+
+    def getCardSet(self):
+        return self.card_set
+
+    def setCardSet(self, in_set):
+        self.card_set = in_set
+        return
 
     def drawCard(self):
-        if len(self.cards) <= 1:
-            chosenCard = cards.errored_card
+        if len(self.myCards) <= 1:
+            chosenCard = self.card_set.errored_card
             print("You've run out of cards!")
             return chosenCard
-        chosenCard = self.cards[0]
+        chosenCard = self.myCards[0]
         if chosenCard.n == "Error":
-            self.cards.append(self.cards.pop(self.cards.index(self.cards[0])))
-            chosenCard = self.cards[0]
+            self.myCards.append(self.myCards.pop(self.myCards.index(self.myCards[0])))
+            chosenCard = self.myCards[0]
         try:
-            self.cards.remove(chosenCard)
+            self.myCards.remove(chosenCard)
             return chosenCard
         except IndexError:
-            chosenCard = cards.errored_card
+            chosenCard = self.card_set.errored_card
             print("You've run out of cards!")
             return chosenCard
-
 
     def drawCardWithoutRemove(self):
-        if len(self.cards) <= 1:
-            chosenCard = cards.errored_card
+        if len(self.myCards) <= 1:
+            chosenCard = self.card_set.errored_card
             print("You've run out of cards!")
             return chosenCard
-        chosenCard = self.cards[0]
+        chosenCard = self.myCards[0]
         if chosenCard.n == "Error":
-            self.cards.append(self.cards.pop(self.cards.index(0)))
-            chosenCard = self.cards[0]
+            self.myCards.append(self.myCards.pop(self.myCards.index(0)))
+            chosenCard = self.myCards[0]
         try:
             return chosenCard
         except IndexError:
-            chosenCard = cards.errored_card
+            chosenCard = self.card_set.errored_card
             print("You've run out of cards!")
             return chosenCard
 
     def pickCard(self, card: str):
         chosenCard = None
         try:
-            for c in self.cards:
+            for c in self.myCards:
                 if card.casefold() == c.n.casefold():
                     chosenCard = c
-                    if chosenCard.n != "Error": self.cards.remove(chosenCard)
+                    if chosenCard.n != "Error":
+                        self.myCards.remove(chosenCard)
                     return chosenCard
             print("Card not found in deck!")
-            return cards.errored_card
+            return self.card_set.errored_card
         except IndexError | AttributeError:
             chosenCard = cards.errored_card
             print("You've run out of cards!")
             return chosenCard
 
-
     def shuffle(self):
-        self.cards = []
+        self.myCards = []
         self.build()
+
     def show(self):
-        for c in self.cards:
+        for c in self.myCards:
             print(c.show())
 
     def cardsRemaining(self):
-        return len(self.cards)
-
-
-
+        return len(self.myCards)
 
 # thisDeck = DeckClass()
 # card = thisDeck.drawCard()
