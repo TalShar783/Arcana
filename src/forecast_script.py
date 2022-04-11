@@ -19,7 +19,7 @@ prefix = '/'
 bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
 explainEmoji = "❓"
-subscribedChannels = [950437219859071067, 951182029242900530]
+subscribedChannels = [950437219859071067]
 
 
 # casting-fate: 950437219859071067
