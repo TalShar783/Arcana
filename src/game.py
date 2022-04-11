@@ -66,7 +66,7 @@ class GameClass:
 #     p.draw(thisGame.deck)
 #     print(p.name)
 #     p.showHand()
-
+#
 # print(thisGame.deck.cardsRemaining())
 
 # c = 40

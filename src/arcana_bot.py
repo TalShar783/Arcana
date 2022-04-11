@@ -7,15 +7,17 @@ import deck
 import player
 import game
 import mytoken
+import hunterCards
 
 TOKEN = mytoken.token
-debugEnabled = False
+debugEnabled = True
 
 description = '''A bot to run a tarot-type deck of cards to predict your future.'''
 
 intents = discord.Intents.all()
 
-dummyGame = game.GameClass("dummyGame")
+dummyHunterGame = game.GameClass("dummyHunterGame", hunterCards)
+dummyGame = game.GameClass("dummyGame", cards)
 
 prefix = '/'
 
@@ -25,10 +27,10 @@ explainEmoji = "❓"
 gamesList = []
 
 
-
 def debug(message):
     if debugEnabled == True:
         print(message)
+
 
 def checkGamesList(gameId):
     debug(f"Checking games list for existing game with gameID {gameId}...")
@@ -99,16 +101,17 @@ def houseColor(house):
         "Fire": discord.Colour.red(),
         "Ice": discord.Colour.blue(),
         "Dead": discord.Colour.darker_gray(),
-        "Fey": discord.Colour.dark_green(),
+        "Fae": discord.Colour.dark_green(),
         "Damned": discord.Colour.dark_red(),
         "Divine": discord.Colour.gold(),
         "Eldritch": discord.Colour.dark_purple(),
         "Beasts": discord.Colour.dark_orange(),
         "Myths": discord.Colour.dark_blue(),
-        "Hunters": discord.Colour.brand_red(),
+        "Hunters": discord.Colour.teal(),
         "Unaligned": discord.Colour.dark_gray()
     }
     return switcher.get(house)
+
 
 botInstructions = "I am the Voice of the Abyss.\n" \
                   "I am your window into the past, present and future.\n" \
@@ -121,10 +124,10 @@ botInstructions = "I am the Voice of the Abyss.\n" \
                   "Example: **draw Lenore 5** will draw 5 cards for the player Lenore.\n\n" \
                   "**pick** takes a card name and draws that card from the deck, and adds it to the player's hand. Example: **pick Lenore King of Darkness**\n\n" \
                   "**showHand** takes a player parameter and shows all the titles of the cards in their hand. Example: **showHand Lenore**\n\n" \
-                  "**explainHand** is like showHand, but also returns the descriptions of each card.\n\n" \
-                  "**explain** takes the name of a card and returns its explanation. Example: **explain King of Darkness**\n\n" \
-                  "**forecast** draws you three cards, unassociated with any game or player, to predict your morning, afternoon, and evening.\n\n" \
+                  "**forecast** draws you one card, unassociated with any game or player, to predict your day.\n\n" \
                   "Lastly, any time you see me react to a message with ❓, you may click that to request that I explain the card in question." \
+ \
+
 
 
 @bot.event
@@ -138,8 +141,12 @@ async def on_raw_reaction_add(payload):
                     await msg.clear_reaction("❓")
                     msgCard = msg.embeds[0].title.replace("*", "")
                     debug(f"Channel ID: {payload.channel_id}. Type: {type(payload.channel_id)}")
-                    debug(f"Channel Object: {bot.get_channel(payload.channel_id)}. Type: {type(bot.get_channel(payload.channel_id))}")
+                    debug(
+                        f"Channel Object: {bot.get_channel(payload.channel_id)}. Type: {type(bot.get_channel(payload.channel_id))}")
                     for c in dummyGame.deck.originalCards:
+                        if c.n.casefold() == msgCard.casefold():
+                            await msg.edit(embed=sendCardEmbed(c))
+                    for c in dummyHunterGame.deck.originalCards:
                         if c.n.casefold() == msgCard.casefold():
                             await msg.edit(embed=sendCardEmbed(c))
 
@@ -160,43 +167,48 @@ async def userMention(msg):
 
 
 @bot.command()
-async def reset(ctx, card_set=cards):
+async def reset(ctx, card_set="cards"):
     debug(f"Reset function called. Passed channel = {ctx.channel}")
-    thisGame = initializeGame(ctx.channel)
-    thisGame.reset(card_set)
-    print("The game has been reset!")
-    print(f"Players: {thisGame.players}")
-    print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
-    await ctx.send("The game has been reset.")
-
+    if card_set == "cards":
+        thisGame = initializeGame(ctx.channel)
+        thisGame.reset()
+        print("The game has been reset!")
+        print(f"Players: {thisGame.players}")
+        print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
+        await ctx.send("The game has been reset. Card set: Saen'dal Arcana")
+    if card_set == "hunterCards":
+        thisGame = initializeGame(ctx.channel)
+        thisGame.reset(hunterCards)
+        print("The game has been reset!")
+        print(f"Players: {thisGame.players}")
+        print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
+        await ctx.send("The game has been reset. Card set: Fate of the Hunter")
 
 
 @bot.command()
 async def forecast(ctx):
-    await ctx.send(f"Your forecast for the morning: ")
-    debug(f"Drawing morning forecast...")
-    drawnCard = dummyGame.deck.drawCard()
-    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
-        await ctx.send("Error: No card found!")
-    else:
-        await embedCardShow(ctx, drawnCard)
-    await ctx.send(f"Your forecast for the afternoon: ")
-    debug(f"Drawing afternoon forecast...")
-    drawnCard = dummyGame.deck.drawCard()
-    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
-        await ctx.send("Error: No card found!")
-    else:
-        await embedCardShow(ctx, drawnCard)
-    await ctx.send(f"Your forecast for the evening: ")
-    debug(f"Drawing evening forecast...")
+    await ctx.send("I bear tidings from the starry abyss concerning your fate today. \n The card that "
+                   "governs your fate today is...")
+    debug(f"Drawing forecast...")
     drawnCard = dummyGame.deck.drawCard()
     if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
         await ctx.send("Error: No card found!")
     else:
         await embedCardShow(ctx, drawnCard)
     dummyGame.reset()
-    return
 
+
+@bot.command()
+async def forecastHunter(ctx):
+    await ctx.send("I bear tidings from the Silent Chorus concerning your fate today. \n The card that "
+                   "governs your fate today is...")
+    debug(f"Drawing forecast...")
+    drawnCard = dummyHunterGame.deck.drawCard()
+    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+        await ctx.send("Error: No card found!")
+    else:
+        await embedCardShow(ctx, drawnCard)
+    dummyHunterGame.reset()
 
 
 @bot.command()
@@ -222,7 +234,7 @@ async def draw(ctx, name: str, number: int = 1):
             if name.casefold() == p.name.casefold():
                 drawnCard = p.draw(thisGame.deck)
                 print(drawnCard.n)
-                if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+                if drawnCard.n == "Error" or (not isinstance(drawnCard, cards.CardClass) and not isinstance(drawnCard, hunterCards.CardClass)):
                     p.hand.remove(cards.errored_card)
                     await ctx.send("Error: No card found!")
                 else:
@@ -236,11 +248,12 @@ async def pick(ctx, name: str, *args: str):
     card = " ".join(args)
     print(f"{name} has requested to draw the card {card}.")
     thisGame.addPlayer(name)
+    pickedCard = False
     for p in thisGame.players:
         if name.casefold() == p.name.casefold():
             await ctx.send(f"**{p.name}** has picked the card...")
             pickedCard = p.pick(thisGame.deck, card)
-        if pickedCard.n == "Error" or not isinstance(pickedCard, cards.CardClass):
+        if pickedCard == "Error" or (not isinstance(pickedCard, cards.CardClass) and not isinstance(pickedCard, hunterCards.CardClass)):
             p.hand.remove(cards.errored_card)
             await ctx.send("Error: No card found!")
         else:
@@ -277,44 +290,31 @@ async def explainHand(ctx, player: str):
                 await embedCardExplain(ctx, c)
 
 
-@bot.command()
-async def explain(ctx, *args: str):
-    thisGame = initializeGame(ctx.channel)
-    card = " ".join(args)
-    print(f"{ctx.author} has requested an explanation of the card {card}.")
-    for c in thisGame.deck.originalCards:
-        if card.casefold() in c.n.casefold():
-            try:
-                await embedCardExplain(ctx, c)
-                return
-            except discord.errors.HTTPException:
-                number = random.randint(1, 10)
-                match number:
-                    case 10:
-                        await ctx.send("How about go fuck yourself.")
-                    case _:
-                        await ctx.send("Oops, that's not the proper name of a card. Try again!")
-                return
-
-    number = random.randint(1, 10)
-    match number:
-        case 10:
-            await ctx.send("How about go fuck yourself.")
-        case _:
-            await ctx.send("Oops, that's not the proper name of a card. Try again!")
-
-
-@bot.command()
-async def roll(ctx, dice: str):
-    """Rolls a dice in NdN format."""
-    try:
-        rolls, limit = map(int, dice.split('d'))
-    except Exception:
-        await ctx.send('Format has to be in NdN!')
-        return
-
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
-    await ctx.send(result)
+# @bot.command()
+# async def explain(ctx, *args: str):
+#     thisGame = initializeGame(ctx.channel)
+#     card = " ".join(args)
+#     print(f"{ctx.author} has requested an explanation of the card {card}.")
+#     for c in thisGame.deck.originalCards:
+#         if card.casefold() in c.n.casefold():
+#             try:
+#                 await embedCardExplain(ctx, c)
+#                 return
+#             except discord.errors.HTTPException:
+#                 number = random.randint(1, 10)
+#                 match number:
+#                     case 10:
+#                         await ctx.send("How about go fuck yourself.")
+#                     case _:
+#                         await ctx.send("Oops, that's not the proper name of a card. Try again!")
+#                 return
+#
+#     number = random.randint(1, 10)
+#     match number:
+#         case 10:
+#             await ctx.send("How about go fuck yourself.")
+#         case _:
+#             await ctx.send("Oops, that's not the proper name of a card. Try again!")
 
 
 bot.run(TOKEN)
