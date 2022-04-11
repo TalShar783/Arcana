@@ -258,6 +258,7 @@ async def pick(ctx, name: str, *args: str):
             await ctx.send("Error: No card found!")
         else:
             await embedCardShow(ctx, pickedCard)
+    return
 
 
 @bot.command()
