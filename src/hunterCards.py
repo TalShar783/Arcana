@@ -434,7 +434,7 @@ the_cats_of_ulthar = CardClass(
     "from Eldritch abominations by an unexpected ally: an army of cats, with whom he had unknowingly gained rapport "
     "through his kindness to the strays in that great dream-city of Ulthar. The Cats of Ulthar represent shelter from "
     "the eldritch and strange in the shade of the mundane. This can often mean finding that something once thought "
-    "innocuous held hidden depths that will make you, or simply the solace and safety offered by what is known and "
+    "innocuous held hidden depths that will help you, or simply the solace and safety offered by what is known and "
     "familiar.",
     "Eldritch")
 rlyeh = CardClass(
