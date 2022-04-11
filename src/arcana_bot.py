@@ -10,7 +10,7 @@ import mytoken
 import hunterCards
 
 TOKEN = mytoken.token
-debugEnabled = True
+debugEnabled = False
 
 description = '''A bot to run a tarot-type deck of cards to predict your future.'''
 
@@ -117,7 +117,7 @@ botInstructions = "I am the Voice of the Abyss.\n" \
                   "I am your window into the past, present and future.\n" \
                   "To speak to me, use the following:\n\n" \
                   f"My command prefix is {prefix}. Prepend all below commands with that.\n\n" \
-                  "**reset** resets the deck and players, starting a new game.\n\n" \
+                  "**reset** resets the deck and players, starting a new game. If you use **reset hunter**, it will instead switch the deck to using the original Hunter's Fate deck.\n\n" \
                   "**players** lists the names of the current players.\n\n" \
                   "**draw** draws at least one card and adds a new player to the game if they're not already playing. It then adds those cards to the player's hand.\n" \
                   "**draw** accepts up to two parameters, the first of which is required: the player's name, and the number of cards to draw.\n" \
@@ -176,7 +176,7 @@ async def reset(ctx, card_set="cards"):
         print(f"Players: {thisGame.players}")
         print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
         await ctx.send("The game has been reset. Card set: Saen'dal Arcana")
-    if card_set == "hunterCards":
+    if card_set == "hunter":
         thisGame = initializeGame(ctx.channel)
         thisGame.reset(hunterCards)
         print("The game has been reset!")
@@ -204,7 +204,7 @@ async def forecastHunter(ctx):
                    "governs your fate today is...")
     debug(f"Drawing forecast...")
     drawnCard = dummyHunterGame.deck.drawCard()
-    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+    if drawnCard.n == "Error" or not isinstance(drawnCard, hunterCards.CardClass):
         await ctx.send("Error: No card found!")
     else:
         await embedCardShow(ctx, drawnCard)
