@@ -81,7 +81,7 @@ async def forecast(c):
                  "governs your fate today is...")
     debug(f"Drawing forecast...")
     drawnCard = dummyGame.deck.drawCard()
-    if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
+    if drawnCard.n == "Error" or not isinstance(drawnCard, hunterCards.CardClass):
         await c.send("Error: No card found!")
     else:
         await embedCardShow(c, drawnCard)
