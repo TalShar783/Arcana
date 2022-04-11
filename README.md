@@ -1,5 +1,6 @@
 # Arcana
- 
+Version 1.0.3 
+
 The Saen'Dal Arcana is an in-world tarot deck for a friend's D&D campaign. This bot simulates a single deck of cards (across all instances; multi-server compatibility isn't implemented), and allows any number of players to draw any number of cards and view their hands and have the cards explained to them. It will respond to any messages in any channel it can see, including DMs.
 
 ## Commands
