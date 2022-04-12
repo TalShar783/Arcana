@@ -26,7 +26,6 @@ bot = commands.Bot(command_prefix=prefix, description=description, intents=inten
 explainEmoji = "❓"
 gamesList = []
 
-
 def debug(message):
     if debugEnabled == True:
         print(message)
@@ -127,9 +126,7 @@ botInstructions = "I am the Voice of the Abyss.\n" \
                   "**forecast** draws you one card, unassociated with any game or player, to predict your day.\n\n" \
                   "Lastly, any time you see me react to a message with ❓, you may click that to request that I explain the card in question." \
  \
-
-
-
+ \
 @bot.event
 async def on_raw_reaction_add(payload):
     messageId = payload.message_id
@@ -186,6 +183,15 @@ async def reset(ctx, card_set="cards"):
 
 
 @bot.command()
+async def debugSwitch():
+    global debugEnabled
+    if debugEnabled:
+        debugEnabled = False
+    else:
+        debugEnabled = True
+
+
+@bot.command()
 async def forecast(ctx):
     await ctx.send("I bear tidings from the starry abyss concerning your fate today. \n The card that "
                    "governs your fate today is...")
@@ -234,7 +240,8 @@ async def draw(ctx, name: str, number: int = 1):
             if name.casefold() == p.name.casefold():
                 drawnCard = p.draw(thisGame.deck)
                 print(drawnCard.n)
-                if drawnCard.n == "Error" or (not isinstance(drawnCard, cards.CardClass) and not isinstance(drawnCard, hunterCards.CardClass)):
+                if drawnCard.n == "Error" or (not isinstance(drawnCard, cards.CardClass) and not isinstance(drawnCard,
+                                                                                                            hunterCards.CardClass)):
                     p.hand.remove(cards.errored_card)
                     await ctx.send("Error: No card found!")
                 else:
@@ -253,7 +260,8 @@ async def pick(ctx, name: str, *args: str):
         if name.casefold() == p.name.casefold():
             await ctx.send(f"**{p.name}** has picked the card...")
             pickedCard = p.pick(thisGame.deck, card)
-        if pickedCard == "Error" or (not isinstance(pickedCard, cards.CardClass) and not isinstance(pickedCard, hunterCards.CardClass)):
+        if pickedCard == "Error" or (
+                not isinstance(pickedCard, cards.CardClass) and not isinstance(pickedCard, hunterCards.CardClass)):
             p.hand.remove(cards.errored_card)
             await ctx.send("Error: No card found!")
         else:
