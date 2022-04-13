@@ -10,7 +10,7 @@ import mytoken
 import hunterCards
 
 TOKEN = mytoken.token
-debugEnabled = False
+debugEnabled = True
 
 description = '''A bot to run a tarot-type deck of cards to predict your future.'''
 
@@ -79,7 +79,18 @@ async def embedCardExplain(ctx, card: cards.CardClass):
 
 async def embedCardShow(ctx, card: cards.CardClass):
     color = houseColor(card.getHouse())
-    msg = await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", "", color))
+    house = ""
+    if isinstance(card, cards.CardClass):
+        house = f"House of {card.getHouse()}"
+        if card.getHouse() == "Unaligned":
+            house = "Unaligned"
+    if isinstance(card, hunterCards.CardClass):
+        house = f"Court of the {card.getHouse()}"
+        if card.getHouse() == "Unaligned":
+            house = "Neutral"
+        if card.getHouse() == "Myths":
+            house = "Court of Myths"
+    msg = await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", house, color))
     await msg.add_reaction("❓")
 
 
@@ -139,26 +150,28 @@ async def on_raw_reaction_add(payload):
     messageId = payload.message_id
     msg = await bot.get_channel(payload.channel_id).fetch_message(messageId)
     if msg.author == bot.get_user(943668329871200258):
+        debug("Bot author recognized")
         if payload.user_id != 943668329871200258:
+            debug("Reacting user is not self.")
             if str(payload.emoji) == "❓":
-                if isinstance(msg.embeds[0].description, discord.embeds._EmptyEmbed):
+                debug("Emoji recognized.")
+                if isinstance(msg.embeds[0], discord.embeds.Embed):
+                    debug("Message recognized as an embed")
                     await msg.clear_reaction("❓")
                     msgCard = msg.embeds[0].title.replace("*", "")
-                    current_deck = initializeGame(msg.channel).deck
-                    debug(f"Channel ID: {payload.channel_id}. Type: {type(payload.channel_id)}")
-                    debug(
-                        f"Channel Object: {bot.get_channel(payload.channel_id)}. Type: {type(bot.get_channel(payload.channel_id))}")
-                    if isinstance(current_deck, bool):
-                        debug("Whoops, something went wrong; the game check returned a boolean. This should be "
-                              "impossible.")
-                        return
-                    if isinstance(current_deck, hunterCards.CardClass) or isinstance(current_deck, cards.CardClass):
-                        for c in current_deck.registry:
+                    if "Court of" in msg.embeds[0].description or "Neutral" in msg.embeds[0].description:
+                        debug("Card recognized as a Hunter card.")
+                        for c in dummyHunterGame.deck.originalCards:
                             if c.n.casefold() == msgCard.casefold():
                                 await msg.edit(embed=sendCardEmbed(c))
                                 return
                     else:
-                        debug("Whoops, something went wrong, the game wasn't recognized!")
+                        if "House of" in msg.embeds[0].description or "Unaligned" in msg.embeds[0].description:
+                            debug("Card recognized as an Arcana card.")
+                            for c in dummyGame.deck.originalCards:
+                                if c.n.casefold() == msgCard.casefold():
+                                    await msg.edit(embed=sendCardEmbed(c))
+                                    return
                         return
 
 
@@ -197,12 +210,14 @@ async def reset(ctx, card_set="cards"):
 
 
 @bot.command()
-async def debugSwitch():
+async def debugSwitch(ctx):
     global debugEnabled
     if debugEnabled:
         debugEnabled = False
+        print("Debug disabled.")
     else:
         debugEnabled = True
+        print("Debug enabled.")
 
 
 @bot.command()
@@ -228,7 +243,7 @@ async def forecastHunter(ctx):
         await ctx.send("Error: No card found!")
     else:
         await embedCardShow(ctx, drawnCard)
-    dummyHunterGame.reset()
+    dummyHunterGame.reset(hunterCards)
 
 
 @bot.command()
@@ -298,8 +313,6 @@ async def showHand(ctx, player: str):
                 output += f"\n**{c.show()}**"
                 await embedCardShow(ctx, c)
             print(output)
-
-
 
 
 bot.run(TOKEN)
