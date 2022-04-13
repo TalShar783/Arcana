@@ -39,7 +39,18 @@ async def embedCardExplain(ctx, card: cards.CardClass):
 
 async def embedCardShow(ctx, card: cards.CardClass):
     color = houseColor(card.getHouse())
-    msg = await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", "", color))
+    house = ""
+    if isinstance(card, cards.CardClass):
+        house = f"House of {card.getHouse()}"
+        if card.getHouse() == "Unaligned":
+            house = "Unaligned"
+    if isinstance(card, hunterCards.CardClass):
+        house = f"Court of the {card.getHouse()}"
+        if card.getHouse() == "Unaligned":
+            house = "Neutral"
+        if card.getHouse() == "Myths":
+            house = "Court of Myths"
+    msg = await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", house, color))
     await msg.add_reaction("❓")
 
 
