@@ -100,7 +100,7 @@ def sendCardEmbed(card: cards.CardClass):
     house = ""
     if isinstance(card, cards.CardClass):
         if card.getHouse() == "Unaligned":
-            house = f"Unaligned\n\n"
+            house = f"Unaligned"
         else:
             house = f"House of {card.getHouse()}"
     if isinstance(card, hunterCards.CardClass):
@@ -112,7 +112,7 @@ def sendCardEmbed(card: cards.CardClass):
         if card.getHouse() == "Beasts":
             house = "Court of Beasts"
     color = houseColor(card.getHouse())
-    explanation = house+card.explain()
+    explanation = house + "\n\n" + card.explain()
     embed = discord.Embed(title=card.show(), url="", description=explanation, color=color)
     return embed
 

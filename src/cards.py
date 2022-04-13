@@ -32,9 +32,9 @@ class CardClass:
 
     def rollChalice(self):
         switcher = {
-            1: "It is filled with glistening red blood.",
-            2: "It is filled with nauseating green poison.",
-            3: "It is filled with rich purple wine."
+            1: "This Chalice is filled with glistening red blood.",
+            2: "This Chalice is filled with nauseating green poison.",
+            3: "This Chalice is filled with rich purple wine."
         }
         roll = switcher.get(random.randint(1, 3), "Invalid")
         return roll
