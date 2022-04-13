@@ -90,13 +90,30 @@ async def embedCardShow(ctx, card: cards.CardClass):
             house = "Neutral"
         if card.getHouse() == "Myths":
             house = "Court of Myths"
+        if card.getHouse() == "Beasts":
+            house = "Court of Beasts"
     msg = await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", house, color))
     await msg.add_reaction("❓")
 
 
 def sendCardEmbed(card: cards.CardClass):
+    house = ""
+    if isinstance(card, cards.CardClass):
+        if card.getHouse() == "Unaligned":
+            house = f"Unaligned\n\n"
+        else:
+            house = f"House of {card.getHouse()}"
+    if isinstance(card, hunterCards.CardClass):
+        house = f"Court of the {card.getHouse()}"
+        if card.getHouse() == "Unaligned":
+            house = "Neutral"
+        if card.getHouse() == "Myths":
+            house = "Court of Myths"
+        if card.getHouse() == "Beasts":
+            house = "Court of Beasts"
     color = houseColor(card.getHouse())
-    embed = discord.Embed(title=card.show(), url="", description=card.explain(), color=color)
+    explanation = house+card.explain()
+    embed = discord.Embed(title=card.show(), url="", description=explanation, color=color)
     return embed
 
 
