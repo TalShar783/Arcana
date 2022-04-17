@@ -1,5 +1,9 @@
 import random
 
+# TODO: Merge cards and hunterCards into a single file, make a new attribute describing what deck the card belongs to.
+#  This will require a good bit of refactoring.
+# TODO: Add documentation.
+
 
 class CardClass:
     registry = []

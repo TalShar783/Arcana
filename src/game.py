@@ -2,6 +2,8 @@ import cards
 import deck
 import player
 import hunterCards
+# TODO: Add documentation.
+
 
 class GameClass:
     def __init__(self, id, cardSet=cards):

@@ -1,5 +1,7 @@
 import cards
-import deck
+import hunterCards
+# TODO: Add documentation.
+
 
 class Player:
     def __init__(self, name):
