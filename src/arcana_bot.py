@@ -26,7 +26,7 @@ dummyGame = game.GameClass("dummyGame", cards)
 
 # This is the command prefix of the bot. Discord.py isn't properly handling slash-commands, so it won't display
 # a command autocomplete, but it works regardless.
-prefix = '/'
+prefix = '!'
 
 bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
 
