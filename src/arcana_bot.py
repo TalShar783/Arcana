@@ -235,7 +235,7 @@ async def on_ready():
 # TODO: Try to make this work with on-mention; I tried it earlier, and it didn't work. Should reduce load slightly.
 @bot.listen('on_message')
 async def userMention(msg):
-    if bot.user.mentioned_in(msg):
+    if bot.user.mentioned_in(msg) and msg.find("@Voice of the Abyss"):
         await msg.channel.send(
             embed=sendEmbed("Voice of the Abyss: Instructions", "", botInstructions, discord.Colour.purple()))
 
