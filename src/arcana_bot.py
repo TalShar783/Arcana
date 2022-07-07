@@ -4,7 +4,7 @@ import cards
 import game
 import mytoken
 import hunterCards
-import WildMagicRolls
+import WildMagicEnums
 
 # TOKEN needs to be your Discord bot's private token. mytoken.py is not included in the repository. To use it, just make
 # a mytoken.py file and assign your token to the "token" variable.
