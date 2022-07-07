@@ -4,6 +4,7 @@ import cards
 import game
 import mytoken
 import hunterCards
+import WildMagicRolls
 
 # TOKEN needs to be your Discord bot's private token. mytoken.py is not included in the repository. To use it, just make
 # a mytoken.py file and assign your token to the "token" variable.
@@ -274,7 +275,12 @@ async def debugSwitch(ctx):
     else:
         debugEnabled = True
         print("Debug enabled.")
-
+        
+# Triggers a Wild Magic Surge
+@bot.command()
+async def wildMagic(ctx):
+    await ctx.send("WILD MAGIC SURGE!"
+    await ctx.send(WildMagicRolls.WildMagicSurge())
 
 # Gives a "daily forecast" from the bot. This one uses the Arcana deck. Draws from the dummy deck, so that existing
 # decks won't be used or altered.
