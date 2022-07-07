@@ -279,7 +279,7 @@ async def debugSwitch(ctx):
 # Triggers a Wild Magic Surge
 @bot.command()
 async def wildMagic(ctx):
-    await ctx.send("WILD MAGIC SURGE!"
+    await ctx.send("WILD MAGIC SURGE!")
     await ctx.send(WildMagicRolls.WildMagicSurge())
 
 # Gives a "daily forecast" from the bot. This one uses the Arcana deck. Draws from the dummy deck, so that existing
