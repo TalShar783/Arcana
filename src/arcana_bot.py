@@ -1,45 +1,70 @@
+from typing import Literal
+
 import discord
+from discord import app_commands
+from discord.app_commands import Choice
 from discord.ext import commands
+from discord.ext.commands import Greedy
+import asyncio
+
 import cards
 import game
 import mytoken
 import hunterCards
 import WildMagicEnums
 
-# TOKEN needs to be your Discord bot's private token. mytoken.py is not included in the repository. To use it, just make
+# TOKEN needs to be your Discord client's private token. mytoken.py is not included in the repository. To use it, just make
 # a mytoken.py file and assign your token to the "token" variable.
 TOKEN = mytoken.token
 # Enabling debugEnabled will allow more verbose reporting in the console.
 debugEnabled = True
-# TODO: Add an embed function for the bot so that it's expandable when the bot is mentioned, rather than blowing up the
+MY_GUILD = discord.Object(id=476818108896772109)
+
+
+# TODO: Add an embed function for the client so that it's expandable when the client is mentioned, rather than blowing up the
 #  text channel.
-# TODO: Add a list for channel IDs or guild IDs that will determine which deck the bot will default to using.
+# TODO: Add a list for channel IDs or guild IDs that will determine which deck the client will default to using.
+class MyClient(discord.Client):
+    def __init__(self):
+        super().__init__(intents=discord.Intents.default(), )
+        self.tree = app_commands.CommandTree(self)
+
+    async def setup_hook(self):
+        self.tree.copy_global_to(guild=MY_GUILD)
+        await self.tree.sync(guild=MY_GUILD)
 
 
-description = '''A bot to run a tarot-type deck of cards to predict your future.'''
-
-# I wasn't really able to get individual intents working, so I just gave the bot all of them.
-intents = discord.Intents.all()
+client = MyClient()
 
 # These two dummy games allow us to use our forecast and explain functions without drawing from existing decks.
 dummyHunterGame = game.GameClass("dummyHunterGame", hunterCards)
 dummyGame = game.GameClass("dummyGame", cards)
-
-# This is the command prefix of the bot. Discord.py isn't properly handling slash-commands, so it won't display
-# a command autocomplete, but it works regardless.
-prefix = '!'
-
-bot = commands.Bot(command_prefix=prefix, description=description, intents=intents)
-
 # Determines what emoji will be used in the Explain methods.
 explainEmoji = "❓"
 # Initializes a list of active games. The game IDs will be equivalent to the channel IDs where they're being played.
 gamesList = []
 
+# This is the command prefix of the client. Discord.py isn't properly handling slash-commands, so it won't display
+# a command autocomplete, but it works regardless.
+prefix = '/'
+
+
 # Makes our debug methods only apply if we've got debugEnabled as True
 def debug(message):
     if debugEnabled:
         print(message)
+
+
+# Default on_ready event, just shows us that we're online.
+@client.event
+async def on_ready():
+    print('Logged in as')
+    print(client.user.name)
+    print(client.user.id)
+    print('------')
+
+
+## Events and Async Functions ##
 
 # This method checks against our gamesList to see if there's an existing game in the channel where it's called.
 # It takes a gameId as an argument, which usually is just the channel ID as a string.
@@ -91,7 +116,7 @@ def initializeGame(channelRaw):
 # Sends a message containing a single embed, containing the "show" function of a card; just the title and house,
 # with a color corresponding to the cards' House.
 # TODO: Change all card houses to fully include 'house of' or 'court of' descriptions, so I can just use those directly.
-async def embedCardShow(ctx, card: cards.CardClass):
+async def embedCardShow(interaction: discord.Interaction, card: cards.CardClass):
     color = houseColor(card.getHouse())
     house = ""
     if isinstance(card, cards.CardClass):
@@ -106,7 +131,7 @@ async def embedCardShow(ctx, card: cards.CardClass):
             house = "Court of Myths"
         if card.getHouse() == "Beasts":
             house = "Court of Beasts"
-    msg = await ctx.send(embed=sendEmbed(f"**{card.show()}**", "", house, color))
+    msg = await interaction.channel.send(embed=sendEmbed(f"**{card.show()}**", "", house, color))
     await msg.add_reaction("❓")
 
 
@@ -159,46 +184,61 @@ def houseColor(house):
     return switcher.get(house)
 
 
-# A long, multi-line string containing markdown formatting, describing how to use the bot.
-botInstructions = "I am the Voice of the Abyss.\n" \
-                  "I am your window into the past, present and future.\n" \
-                  "To speak to me, use the following:\n\n" \
-                  f"My command prefix is {prefix}. Prepend all below commands with that.\n\n" \
-                  "**reset** resets the deck and players, starting a new game. If you use **reset hunter**, " \
-                  "it will instead switch the deck to using the original Hunter's Fate deck.\n\n" \
-                  "If you use it without arguments, it will use the Arcana deck.\n\n" \
-                  "**players** lists the names of the current players.\n\n" \
-                  "**draw** draws at least one card and adds a new player to the game if they're not already playing." \
-                  "It then adds those cards to the player's hand.\n" \
-                  "**draw** accepts up to two parameters, the first of which is required: the player's name, " \
-                  "and the number of cards to draw.\n" \
-                  "Example: **draw Lenore 5** will draw 5 cards for the player Lenore.\n\n" \
-                  "**pick** takes a card name and draws that card from the deck, and adds it to the player's hand. " \
-                  "Example: **pick Lenore King of Darkness**\n\n" \
-                  "**showHand** takes a player parameter and shows all the titles of the cards in their hand. " \
-                  "Example: **showHand Lenore**\n\n" \
-                  "**forecast** draws you one card, unassociated with any game or player, to predict your day.\n\n" \
-                  "Lastly, any time you see me react to a message with ❓, you may click that to request that I " \
-                  "explain the card in question." \
+# A long, multi-line string containing markdown formatting, describing how to use the client.
+clientInstructions = "I am the Voice of the Abyss.\n" \
+                     "I am your window into the past, present and future.\n" \
+                     "To speak to me, use the following:\n\n" \
+                     f"My command prefix is {prefix}. Prepend all below commands with that.\n\n" \
+                     "**reset** resets the deck and players, starting a new game. If you use **reset hunter**, " \
+                     "it will instead switch the deck to using the original Hunter's Fate deck.\n\n" \
+                     "If you use it without arguments, it will use the Arcana deck.\n\n" \
+                     "**players** lists the names of the current players.\n\n" \
+                     "**draw** draws at least one card and adds a new player to the game if they're not already playing." \
+                     "It then adds those cards to the player's hand.\n" \
+                     "**draw** accepts up to two parameters, the first of which is required: the player's name, " \
+                     "and the number of cards to draw.\n" \
+                     "Example: **draw Lenore 5** will draw 5 cards for the player Lenore.\n\n" \
+                     "**pick** takes a card name and draws that card from the deck, and adds it to the player's hand. " \
+                     "Example: **pick Lenore King of Darkness**\n\n" \
+                     "**showHand** takes a player parameter and shows all the titles of the cards in their hand. " \
+                     "Example: **showHand Lenore**\n\n" \
+                     "**forecast** draws you one card, unassociated with any game or player, to predict your day.\n\n" \
+                     "Lastly, any time you see me react to a message with ❓, you may click that to request that I " \
+                     "explain the card in question." \
  \
  \
+
+
+    ##Commands and Events##
+
+
+@client.tree.command()
+@app_commands.describe(first='The first number to add', second='The second number to add')
+async def add(
+        interaction: discord.Interaction,
+        first: app_commands.Range[int, 0, 100],
+        second: app_commands.Range[int, 0, None],
+):
+    """Adds two numbers together"""
+    await interaction.response.send_message(f'{first} + {second} = {first + second}', ephemeral=False)
 
 
 # Uses the on_raw_reaction_add event, given the payload object (another way of accessing the message object). Tries to
 # narrow messages down as quickly as possible, since this will be reading every message that's reacted-to.
-# Checks to see whether the original message was sent by the bot itself, then whether the reaction was sent by anyone
-# other than the bot, then checks to see if the emoji was the question-mark.
+# Checks to see whether the original message was sent by the client itself, then whether the reaction was sent by anyone
+# other than the client, then checks to see if the emoji was the question-mark.
 # TODO: Tokenize the question-mark so it can be changed more easily.
 # Once the message is recognized as an embed, it reads the description object of the embed. Right now, the only way to
 # differentiate between decks is to see whether the house is "Court of" and "Neutral"; or "House of" and "Unaligned."
 # TODO: Add deck name to the original embed description and use that to differentiate decks.
-# Once recognized, the bot searches the appropriate deck and edits the embed to be an Explain embed rather than a Show.
-@bot.event
+# Once recognized, the client searches the appropriate deck and edits the embed to be an Explain embed rather than a Show.
+
+@client.event
 async def on_raw_reaction_add(payload):
     messageId = payload.message_id
-    msg = await bot.get_channel(payload.channel_id).fetch_message(messageId)
-    if msg.author == bot.get_user(943668329871200258):
-        debug("Bot author recognized")
+    msg = await client.get_channel(payload.channel_id).fetch_message(messageId)
+    if msg.author == client.get_user(943668329871200258):
+        debug("client author recognized")
         if payload.user_id != 943668329871200258:
             debug("Reacting user is not self.")
             if str(payload.emoji) == "❓":
@@ -223,51 +263,43 @@ async def on_raw_reaction_add(payload):
                         return
 
 
-# Default on_ready event, just shows us that we're online.
-@bot.event
-async def on_ready():
-    print('Logged in as')
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
-
-
-# Reads to see whether the bot has been @-mentioned. If so, sends its instructions.
+# Reads to see whether the client has been @-mentioned. If so, sends its instructions.
 # TODO: Try to make this work with on-mention; I tried it earlier, and it didn't work. Should reduce load slightly.
-@bot.listen('on_message')
-async def userMention(msg):
-    if msg.mention_everyone or msg.mention_channel:
-        return
-    if bot.user.mentioned_in(msg):
-        await msg.channel.send(
-            embed=sendEmbed("Voice of the Abyss: Instructions", "", botInstructions, discord.Colour.purple()))
+@client.tree.command()
+async def help(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        embed=sendEmbed("Voice of the Abyss: Instructions", "", clientInstructions, discord.Colour.purple()), ephemeral= True)
 
 
 # Takes an optional argument that defaults to using the regular Arcana deck. If the argument is "hunter", uses the
 # Hunter deck instead.
 # TODO: Add error reporting in case an improper argument is given.
-@bot.command()
-async def reset(ctx, card_set="cards"):
-    debug(f"Reset function called. Passed channel = {ctx.channel}")
-    if card_set == "cards":
-        thisGame = initializeGame(ctx.channel)
+@client.tree.command()
+@app_commands.describe(card_set="The deck to use in the new game")
+async def reset(
+        interaction: discord.Interaction,
+        card_set: Literal["The Hunter's Fate", "Saen'dal Arcana"]
+):
+    debug(f"Reset function called. Passed channel = {interaction.channel}")
+    if card_set == "Saen'dal Arcana":
+        thisGame = initializeGame(interaction.channel)
         thisGame.reset()
         print("The game has been reset!")
         print(f"Players: {thisGame.players}")
         print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
-        await ctx.send("The game has been reset. Card set: Saen'dal Arcana")
-    if card_set == "hunter":
-        thisGame = initializeGame(ctx.channel)
+        await interaction.response.send_message("The game has been reset. Card set: Saen'dal Arcana")
+    if card_set == "The Hunter's Fate":
+        thisGame = initializeGame(interaction.channel)
         thisGame.reset(hunterCards)
         print("The game has been reset!")
         print(f"Players: {thisGame.players}")
         print(f"Cards remaining in deck: {thisGame.deck.cardsRemaining()}")
-        await ctx.send("The game has been reset. Card set: Fate of the Hunter")
+        await interaction.response.send_message("The game has been reset. Card set: The Hunter's Fate")
 
 
-# Switches debug mode on or off, allowing us to debug without restarting the bot.
-@bot.command()
-async def debugSwitch(ctx):
+# Switches debug mode on or off, allowing us to debug without restarting the client.
+@client.tree.command()
+async def debug_switch(interaction: discord.Interaction):
     global debugEnabled
     if debugEnabled:
         debugEnabled = False
@@ -275,64 +307,61 @@ async def debugSwitch(ctx):
     else:
         debugEnabled = True
         print("Debug enabled.")
-        
-# Triggers a Wild Magic Surge
-@bot.command()
-async def wildMagic(ctx):
-    await ctx.send("WILD MAGIC SURGE!")
-    await ctx.send(WildMagicEnums.WildMagicSurge())
 
-# Gives a "daily forecast" from the bot. This one uses the Arcana deck. Draws from the dummy deck, so that existing
+
+# Gives a "daily forecast" from the client. This one uses the Arcana deck. Draws from the dummy deck, so that existing
 # decks won't be used or altered.
-@bot.command()
-async def forecast(ctx):
-    await ctx.send("I bear tidings from the starry abyss concerning your fate today. \n The card that "
-                   "governs your fate today is...")
+@client.tree.command()
+async def forecast(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "I bear tidings from the starry abyss concerning your fate today. \n The card that "
+        "governs your fate today is...")
     debug(f"Drawing forecast...")
     drawnCard = dummyGame.deck.drawCard()
     if drawnCard.n == "Error" or not isinstance(drawnCard, cards.CardClass):
-        await ctx.send("Error: No card found!")
+        await interaction.response.send_message("Error: No card found!")
     else:
-        await embedCardShow(ctx, drawnCard)
+        await embedCardShow(interaction, drawnCard)
     dummyGame.reset()
 
 
 # Same as forecast, but uses the Hunter deck instead.
-@bot.command()
-async def forecastHunter(ctx):
-    await ctx.send("I bear tidings from the Silent Chorus concerning your fate today. \n The card that "
-                   "governs your fate today is...")
+@client.tree.command()
+async def forecast_hunter(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        "I bear tidings from the Silent Chorus concerning your fate today. \n The card that "
+        "governs your fate today is...")
     debug(f"Drawing forecast...")
     drawnCard = dummyHunterGame.deck.drawCard()
     if drawnCard.n == "Error" or not isinstance(drawnCard, hunterCards.CardClass):
-        await ctx.send("Error: No card found!")
+        await interaction.response.send_message("Error: No card found!")
     else:
-        await embedCardShow(ctx, drawnCard)
+        await embedCardShow(interaction, drawnCard)
     dummyHunterGame.reset(hunterCards)
 
 
 # Sends a list of players in this channel's game to the channel.
-@bot.command()
-async def players(ctx):
-    thisGame = initializeGame(ctx.channel)
-    print(f"{ctx.author} has requested to see a list of current players.")
+@client.tree.command()
+async def players(interaction: discord.Interaction):
+    thisGame = initializeGame(interaction.channel)
+    print(f"{interaction.user} has requested to see a list of current players.")
     output = ""
     for p in thisGame.players:
         output += f"{p.name}\n"
-    await ctx.send(output)
+    await interaction.response.send_message(output)
 
 
 # Draws a card for the given player. Player must specify the player name to draw the card; after the player exists,
 # The command is case-insensitive. If the player provides a number after the playername, it will draw that many cards.
 # If no number is specified, it will draw one.
 # TODO: Add more robust error handling.
-@bot.command()
-async def draw(ctx, name: str, number: int = 1):
-    thisGame = initializeGame(ctx.channel)
+@client.tree.command()
+async def draw(interaction: discord.Interaction, name: str, number: int):
+    thisGame = initializeGame(interaction.channel)
     thisGame.addPlayer(name)
     for p in thisGame.players:
         if name.casefold() == p.name.casefold():
-            await ctx.send(f"**{p.name}** draws: ")
+            await interaction.response.send_message(f"**{p.name}** draws: ")
     for i in range(number):
         print(f"Drawing a card for {name}...")
         for p in thisGame.players:
@@ -342,50 +371,56 @@ async def draw(ctx, name: str, number: int = 1):
                 if drawnCard.n == "Error" or (not isinstance(drawnCard, cards.CardClass) and not isinstance(drawnCard,
                                                                                                             hunterCards.CardClass)):
                     p.hand.remove(cards.errored_card)
-                    await ctx.send("Error: No card found!")
+                    await interaction.response.send_message("Error: No card found!")
                 else:
-                    await embedCardShow(ctx, drawnCard)
+                    await embedCardShow(interaction, drawnCard)
     return
 
 
 # Picks a card out of the active deck, removing it from the deck and adding it to the specified player's hand. Requires
 # a case-insensitive player name and a case-insensitive card name.
 # TODO: Add more robust error handling.
-@bot.command()
-async def pick(ctx, name: str, *args: str):
-    thisGame = initializeGame(ctx.channel)
-    card = " ".join(args)
+@client.tree.command()
+async def pick(interaction: discord.Interaction, name: str, card: str):
+    thisGame = initializeGame(interaction.channel)
     print(f"{name} has requested to draw the card {card}.")
     thisGame.addPlayer(name)
     pickedCard = False
     for p in thisGame.players:
         if name.casefold() == p.name.casefold():
-            await ctx.send(f"**{p.name}** has picked the card...")
+            await interaction.response.send_message(f"**{p.name}** has picked the card...")
             pickedCard = p.pick(thisGame.deck, card)
         if pickedCard == "Error" or (
                 not isinstance(pickedCard, cards.CardClass) and not isinstance(pickedCard, hunterCards.CardClass)):
             p.hand.remove(cards.errored_card)
-            await ctx.send("Error: No card found!")
+            await interaction.response.send_message("Error: No card found!")
         else:
-            await embedCardShow(ctx, pickedCard)
+            await embedCardShow(interaction, pickedCard)
     return
 
+
 # Sends a "Show" embed for each card in a player's hand.
-@bot.command()
-async def showHand(ctx, player: str):
-    thisGame = initializeGame(ctx.channel)
-    print(f"{ctx.author} has requested to see {player}'s hand.")
+@client.tree.command()
+async def show_hand(interaction: discord.Interaction, player: str):
+    thisGame = initializeGame(interaction.channel)
+    print(f"{interaction.user} has requested to see {player}'s hand.")
     output: str = ""
     output += f"{player}: "
     for p in thisGame.players:
         if player.casefold() in p.name.casefold():
-            await ctx.send(f"**{p.name}**'s hand is:")
+            await interaction.response.send_message(f"**{p.name}**'s hand is:")
     for p in thisGame.players:
         if player.casefold() in p.name.casefold():
             for c in p.hand:
                 output += f"\n**{c.show()}**"
-                await embedCardShow(ctx, c)
+                await embedCardShow(interaction, c)
             print(output)
 
 
-bot.run(TOKEN)
+# Triggers a Wild Magic Surge
+@client.tree.command()
+async def wild_magic(interaction: discord.Interaction):
+    await interaction.response.send_message(f"WILD MAGIC SURGE! \n {WildMagicEnums.WildMagicSurge()}")
+
+
+client.run(TOKEN)
