@@ -211,18 +211,6 @@ clientInstructions = "I am the Voice of the Abyss.\n" \
 
     ##Commands and Events##
 
-
-@client.tree.command()
-@app_commands.describe(first='The first number to add', second='The second number to add')
-async def add(
-        interaction: discord.Interaction,
-        first: app_commands.Range[int, 0, 100],
-        second: app_commands.Range[int, 0, None],
-):
-    """Adds two numbers together"""
-    await interaction.response.send_message(f'{first} + {second} = {first + second}', ephemeral=False)
-
-
 # Uses the on_raw_reaction_add event, given the payload object (another way of accessing the message object). Tries to
 # narrow messages down as quickly as possible, since this will be reading every message that's reacted-to.
 # Checks to see whether the original message was sent by the client itself, then whether the reaction was sent by anyone
