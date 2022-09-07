@@ -236,7 +236,7 @@ async def on_ready():
 # TODO: Try to make this work with on-mention; I tried it earlier, and it didn't work. Should reduce load slightly.
 @bot.listen('on_message')
 async def userMention(msg):
-    if msg.mention_everyone:
+    if msg.mention_everyone or msg.mention_channel:
         return
     if bot.user.mentioned_in(msg):
         await msg.channel.send(

@@ -62,7 +62,7 @@ class DeckClass:
         chosenCard = None
         try:
             for c in self.myCards:
-                if card.casefold() == c.n.casefold():
+                if card.lower() == c.n.lower():
                     chosenCard = c
                     if chosenCard.n != "Error":
                         self.myCards.remove(chosenCard)
